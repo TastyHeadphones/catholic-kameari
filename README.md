@@ -20,10 +20,17 @@ The image includes WordPress PHP 8.2 Apache, the Kadence parent theme, the Catho
 
 For Railway, create a new service from the Docker image above, add a MySQL-compatible database service, set the `WORDPRESS_DB_*` variables, and mount persistent storage only for uploads at `/var/www/html/wp-content/uploads`. See `docs/railway-ghcr-deploy.md`.
 
+Run the same Docker startup smoke test used by GitHub Actions:
+
+```bash
+./scripts/smoke-test-docker.sh
+```
+
 ## What Is Included
 
 - Docker local/staging environment for WordPress PHP 8.2 and MariaDB.
 - GHCR-ready production Docker image.
+- Docker smoke test for the GHCR/Railway startup path.
 - Kadence child theme with the Catholic Kameari visual direction.
 - Editable Gutenberg homepage pattern.
 - Bootstrap script for WordPress settings, theme, plugins, menu, and required pages.

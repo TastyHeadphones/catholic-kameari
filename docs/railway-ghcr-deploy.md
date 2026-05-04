@@ -14,6 +14,7 @@ The image includes:
 - Recommended plugin packages: Kadence Blocks, The Events Calendar, Contact Form 7, Yoast SEO, UpdraftPlus, Wordfence, Redirection, and LiteSpeed Cache.
 - PHP upload configuration from `config/uploads.ini`.
 - A Railway-aware entrypoint that honors Railway's `$PORT` variable.
+- Apache MPM normalization so only `mpm_prefork` is loaded for WordPress `mod_php`.
 
 ## Publish Flow
 
@@ -23,6 +24,14 @@ The GitHub Actions workflow `.github/workflows/publish-ghcr.yml` builds and push
 - `ghcr.io/tastyheadphones/catholic-kameari:sha-<commit-sha>`
 
 The workflow runs on pushes to `main`, semantic version tags, and manual dispatch.
+
+Before pushing to GHCR, the workflow runs:
+
+```bash
+./scripts/smoke-test-docker.sh
+```
+
+That script builds the Docker image, runs `apache2ctl -t`, boots the image with `PORT=8080`, and fails if Apache logs `More than one MPM loaded` or if `mpm_event`/`mpm_worker` are active.
 
 If the package is private in GitHub Packages, make it public or configure Railway with GHCR credentials before deploying.
 
@@ -74,4 +83,3 @@ After the first successful deploy:
 ## Notes
 
 Railway is convenient for Dockerized deployment, but WordPress still needs persistent uploads and a reliable database backup strategy. Treat the container image as application code, and treat the database plus uploads volume as production data.
-

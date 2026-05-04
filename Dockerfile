@@ -12,6 +12,8 @@ ENV WORDPRESS_CONFIG_EXTRA="define('WP_MEMORY_LIMIT', '256M'); define('WP_MAX_ME
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends ca-certificates curl unzip; \
+    a2dismod -f mpm_event mpm_worker || true; \
+    a2enmod mpm_prefork rewrite; \
     mkdir -p /tmp/wp-downloads; \
     curl -fsSL -o /tmp/wp-downloads/kadence.zip https://downloads.wordpress.org/theme/kadence.latest-stable.zip; \
     unzip -q /tmp/wp-downloads/kadence.zip -d /usr/src/wordpress/wp-content/themes; \
@@ -29,6 +31,7 @@ RUN set -eux; \
       unzip -q "/tmp/wp-downloads/${plugin}.zip" -d /usr/src/wordpress/wp-content/plugins; \
     done; \
     chown -R www-data:www-data /usr/src/wordpress/wp-content/themes /usr/src/wordpress/wp-content/plugins; \
+    apache2ctl -t; \
     rm -rf /tmp/wp-downloads /var/lib/apt/lists/*
 
 COPY config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
@@ -41,4 +44,3 @@ EXPOSE 80
 
 ENTRYPOINT ["railway-entrypoint.sh"]
 CMD ["apache2-foreground"]
-
