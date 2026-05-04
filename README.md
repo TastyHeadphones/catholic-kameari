@@ -4,6 +4,10 @@ This repository is a practical WordPress rebuild and migration kit for the offic
 
 The recommendation is WordPress with Kadence Theme, Gutenberg, Kadence Blocks, The Events Calendar, Contact Form 7, Yoast SEO, UpdraftPlus, Wordfence, LiteSpeed Cache, and Redirection. This keeps the publishing workflow familiar for parish staff while allowing a modern, calm, mobile-first redesign.
 
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new?utm_medium=integration&utm_source=button&utm_campaign=catholic-kameari)
+
+Use the button to open Railway's new project flow, then select **Deploy from GitHub repo** and choose `TastyHeadphones/catholic-kameari`. For production WordPress hosting on Railway, add a MySQL-compatible database service and persistent storage for uploads before launch. If this project is later published as a Railway template, replace the button URL with the generated template URL.
+
 ## What Is Included
 
 - Docker local/staging environment for WordPress PHP 8.2 and MariaDB.
