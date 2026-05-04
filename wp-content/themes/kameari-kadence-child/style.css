@@ -1,0 +1,362 @@
+/*
+Theme Name: Catholic Kameari Kadence Child
+Theme URI: https://catholic-kameari.jp/
+Description: Calm, accessible Kadence child theme for Catholic Kameari Church, St. Francis of Assisi, Tokyo.
+Author: Catholic Kameari Church
+Template: kadence
+Version: 0.1.0
+Requires at least: 6.5
+Tested up to: 6.8
+Requires PHP: 8.2
+Text Domain: kameari
+*/
+
+:root {
+  --kameari-ivory: #f8f4ec;
+  --kameari-warm-white: #fffdf8;
+  --kameari-green: #1f4d3a;
+  --kameari-navy: #1d2b3a;
+  --kameari-gold: #b89b5e;
+  --kameari-charcoal: #242424;
+  --kameari-beige: #e8ddc8;
+  --kameari-gray: #f3f3f0;
+  --kameari-border: rgba(31, 77, 58, 0.16);
+  --kameari-shadow: 0 18px 50px rgba(29, 43, 58, 0.11);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--kameari-ivory);
+  color: var(--kameari-charcoal);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  font-size: 18px;
+  line-height: 1.85;
+  letter-spacing: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+.site-title {
+  color: var(--kameari-navy);
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+a {
+  color: var(--kameari-green);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+a:hover {
+  color: var(--kameari-navy);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.wp-block-button__link:focus-visible {
+  outline: 3px solid var(--kameari-gold);
+  outline-offset: 3px;
+}
+
+.site-main {
+  background: var(--kameari-ivory);
+}
+
+.content-bg,
+.entry-content-wrap,
+.wp-site-blocks,
+.site-container {
+  background-color: transparent;
+}
+
+.entry-content > .alignfull {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+}
+
+.kameari-section {
+  padding: clamp(3rem, 7vw, 6.5rem) 0;
+}
+
+.kameari-section--white {
+  background: var(--kameari-warm-white);
+}
+
+.kameari-section--green {
+  background: var(--kameari-green);
+  color: var(--kameari-warm-white);
+}
+
+.kameari-section--green h2,
+.kameari-section--green h3,
+.kameari-section--green a {
+  color: var(--kameari-warm-white);
+}
+
+.kameari-section--green .kameari-card h3 {
+  color: var(--kameari-navy);
+}
+
+.kameari-section--green .kameari-card a {
+  color: var(--kameari-green);
+}
+
+.kameari-inner {
+  margin-inline: auto;
+  max-width: 1180px;
+  padding-inline: clamp(1.125rem, 4vw, 2.5rem);
+}
+
+.kameari-eyebrow {
+  color: var(--kameari-green);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.kameari-section--green .kameari-eyebrow {
+  color: var(--kameari-beige);
+}
+
+.kameari-lead {
+  color: rgba(36, 36, 36, 0.82);
+  font-size: clamp(1.05rem, 2vw, 1.22rem);
+  line-height: 1.9;
+  max-width: 760px;
+}
+
+.kameari-hero {
+  background:
+    linear-gradient(90deg, rgba(29, 43, 58, 0.78), rgba(31, 77, 58, 0.48), rgba(29, 43, 58, 0.08)),
+    var(--kameari-hero-image, url("https://catholic-kameari.jp/wp-content/uploads/2022/05/kameari_church_1.jpg"));
+  background-position: center;
+  background-size: cover;
+  color: var(--kameari-warm-white);
+  min-height: min(760px, 88vh);
+  position: relative;
+}
+
+.kameari-hero::after {
+  background: linear-gradient(180deg, rgba(248, 244, 236, 0), var(--kameari-ivory));
+  bottom: 0;
+  content: "";
+  height: 7rem;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+.kameari-hero__content {
+  min-height: min(720px, 84vh);
+  padding: clamp(5rem, 12vw, 9rem) 0 clamp(6rem, 14vw, 9rem);
+  position: relative;
+  z-index: 1;
+}
+
+.kameari-hero h1 {
+  color: var(--kameari-warm-white);
+  font-size: clamp(2.65rem, 8vw, 5.6rem);
+  margin-bottom: 1rem;
+  max-width: 920px;
+  text-wrap: balance;
+}
+
+.kameari-hero p {
+  color: rgba(255, 253, 248, 0.94);
+  font-size: clamp(1.12rem, 2.4vw, 1.45rem);
+  max-width: 720px;
+}
+
+.kameari-actions,
+.wp-block-buttons.kameari-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 2rem;
+}
+
+.wp-block-button__link,
+.kameari-button {
+  border-radius: 999px;
+  font-weight: 700;
+  min-height: 48px;
+  padding: 0.75rem 1.2rem;
+}
+
+.wp-block-button:not(.is-style-outline) .wp-block-button__link,
+.kameari-button--primary {
+  background: var(--kameari-green);
+  color: var(--kameari-warm-white);
+}
+
+.wp-block-button:not(.is-style-outline) .wp-block-button__link:hover,
+.kameari-button--primary:hover {
+  background: var(--kameari-navy);
+  color: var(--kameari-warm-white);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link,
+.kameari-button--secondary {
+  background: rgba(255, 253, 248, 0.92);
+  border: 1px solid rgba(255, 253, 248, 0.72);
+  color: var(--kameari-navy);
+}
+
+.kameari-card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+
+.kameari-card,
+.wp-block-group.kameari-card {
+  background: var(--kameari-warm-white);
+  border: 1px solid var(--kameari-border);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(29, 43, 58, 0.07);
+  min-height: 100%;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.kameari-card h3 {
+  font-size: clamp(1.16rem, 2vw, 1.45rem);
+  margin-top: 0;
+}
+
+.kameari-card p {
+  margin-bottom: 0;
+}
+
+.kameari-card--gold {
+  border-top: 4px solid var(--kameari-gold);
+}
+
+.kameari-schedule-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.kameari-schedule-item {
+  align-items: baseline;
+  border-bottom: 1px solid var(--kameari-border);
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: minmax(8rem, 0.9fr) 1.4fr;
+  padding: 0.7rem 0;
+}
+
+.kameari-schedule-item strong {
+  color: var(--kameari-navy);
+}
+
+.kameari-news-list .wp-block-post {
+  background: var(--kameari-warm-white);
+  border: 1px solid var(--kameari-border);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(29, 43, 58, 0.07);
+  padding: 1.25rem;
+}
+
+.kameari-news-list .wp-block-post-title {
+  font-size: 1.2rem;
+  line-height: 1.55;
+}
+
+.kameari-post-list {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+
+.kameari-post-list__item {
+  background: var(--kameari-warm-white);
+  border: 1px solid var(--kameari-border);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(29, 43, 58, 0.07);
+  padding: 1.25rem;
+}
+
+.kameari-post-list__item time {
+  color: rgba(36, 36, 36, 0.68);
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.45rem;
+}
+
+.kameari-post-list__item h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+
+.kameari-post-list__item p {
+  margin-bottom: 0;
+}
+
+.kameari-map {
+  border: 0;
+  border-radius: 8px;
+  box-shadow: var(--kameari-shadow);
+  min-height: 360px;
+  width: 100%;
+}
+
+.site-footer {
+  background: var(--kameari-navy);
+  color: rgba(255, 253, 248, 0.86);
+}
+
+.site-footer a {
+  color: var(--kameari-warm-white);
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 17px;
+  }
+
+  .kameari-hero,
+  .kameari-hero__content {
+    min-height: 620px;
+  }
+
+  .kameari-schedule-item {
+    grid-template-columns: 1fr;
+  }
+
+  .kameari-actions,
+  .wp-block-buttons.kameari-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .kameari-actions .wp-block-button,
+  .kameari-actions .wp-block-button__link {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

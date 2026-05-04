@@ -1,0 +1,15 @@
+.DS_Store
+.env
+.migration-cache/
+backup/
+exports/
+node_modules/
+
+# Runtime WordPress files
+wp-content/cache/
+wp-content/upgrade/
+wp-content/uploads/*
+!wp-content/uploads/.gitkeep
+wp-content/plugins/*
+!wp-content/plugins/.gitkeep
+

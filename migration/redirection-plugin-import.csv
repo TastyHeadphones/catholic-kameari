@@ -1,0 +1,6 @@
+source,target,regex,code
+/category/news/,/news/,0,301
+/category/topics/,/topics/,0,301
+/category/monthly_schedule/,/schedule/monthly/,0,301
+/category/liturgy/,/schedule/annual/,0,301
+/category/event/,/schedule/annual/,0,301

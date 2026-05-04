@@ -1,0 +1,34 @@
+:root {
+  --kameari-ivory: #f8f4ec;
+  --kameari-warm-white: #fffdf8;
+  --kameari-green: #1f4d3a;
+  --kameari-navy: #1d2b3a;
+  --kameari-gold: #b89b5e;
+  --kameari-charcoal: #242424;
+  --kameari-beige: #e8ddc8;
+}
+
+.editor-styles-wrapper {
+  background: var(--kameari-ivory);
+  color: var(--kameari-charcoal);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  font-size: 18px;
+  line-height: 1.85;
+}
+
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4 {
+  color: var(--kameari-navy);
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", Georgia, serif;
+  line-height: 1.35;
+}
+
+.editor-styles-wrapper .kameari-card {
+  background: var(--kameari-warm-white);
+  border: 1px solid rgba(31, 77, 58, 0.16);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
