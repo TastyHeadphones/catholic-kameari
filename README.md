@@ -8,9 +8,22 @@ The recommendation is WordPress with Kadence Theme, Gutenberg, Kadence Blocks, T
 
 Use the button to open Railway's new project flow, then select **Deploy from GitHub repo** and choose `TastyHeadphones/catholic-kameari`. For production WordPress hosting on Railway, add a MySQL-compatible database service and persistent storage for uploads before launch. If this project is later published as a Railway template, replace the button URL with the generated template URL.
 
+## GHCR Docker Image
+
+The production WordPress image is published to GitHub Container Registry:
+
+```text
+ghcr.io/tastyheadphones/catholic-kameari:latest
+```
+
+The image includes WordPress PHP 8.2 Apache, the Kadence parent theme, the Catholic Kameari child theme, and the recommended plugin packages. Pushes to `main` automatically publish `latest` and `sha-<commit>` tags through `.github/workflows/publish-ghcr.yml`.
+
+For Railway, create a new service from the Docker image above, add a MySQL-compatible database service, set the `WORDPRESS_DB_*` variables, and mount persistent storage only for uploads at `/var/www/html/wp-content/uploads`. See `docs/railway-ghcr-deploy.md`.
+
 ## What Is Included
 
 - Docker local/staging environment for WordPress PHP 8.2 and MariaDB.
+- GHCR-ready production Docker image.
 - Kadence child theme with the Catholic Kameari visual direction.
 - Editable Gutenberg homepage pattern.
 - Bootstrap script for WordPress settings, theme, plugins, menu, and required pages.
@@ -92,6 +105,7 @@ Refresh these files after the current site changes:
 - `docs/maintenance-guide.md`
 - `docs/backup-restore.md`
 - `docs/seo-accessibility.md`
+- `docs/railway-ghcr-deploy.md`
 
 ## Production Recommendation
 

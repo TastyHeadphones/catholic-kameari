@@ -1,0 +1,17 @@
+.git
+.github
+.env
+.env.*
+!.env.example
+.DS_Store
+.migration-cache
+backup
+exports
+node_modules
+wp-content/cache
+wp-content/upgrade
+wp-content/uploads
+wp-content/plugins
+docs
+migration
+
