@@ -34,4 +34,20 @@ if [ -n "${PORT:-}" ] && [ "${PORT}" != "80" ]; then
   sed -ri "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf
 fi
 
+if [ -z "${WORDPRESS_DB_HOST:-}" ] && [ -z "${MYSQLHOST:-}" ]; then
+  echo "No MySQL variables detected. Enabling SQLite mode for single-container deployment."
+  export WORDPRESS_DB_HOST="${WORDPRESS_DB_HOST:-localhost}"
+  export WORDPRESS_DB_NAME="${WORDPRESS_DB_NAME:-wordpress}"
+  export WORDPRESS_DB_USER="${WORDPRESS_DB_USER:-wordpress}"
+  export WORDPRESS_DB_PASSWORD="${WORDPRESS_DB_PASSWORD:-wordpress}"
+  export WORDPRESS_CONFIG_EXTRA="${WORDPRESS_CONFIG_EXTRA:-}
+define('SQLITE_MAIN_FILE', '/var/www/html/wp-content/database/.ht.sqlite');
+"
+  mkdir -p /var/www/html/wp-content/database
+  chown -R www-data:www-data /var/www/html/wp-content/database
+  if [ -f /usr/src/wordpress/wp-content/plugins/sqlite-database-integration/db.copy ]; then
+    cp /usr/src/wordpress/wp-content/plugins/sqlite-database-integration/db.copy /var/www/html/wp-content/db.php
+  fi
+fi
+
 exec docker-entrypoint.sh "$@"

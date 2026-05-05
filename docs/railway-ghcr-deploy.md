@@ -15,6 +15,7 @@ The image includes:
 - PHP upload configuration from `config/uploads.ini`.
 - A Railway-aware entrypoint that honors Railway's `$PORT` variable.
 - Automatic mapping from Railway MySQL variables to WordPress database variables.
+- Automatic SQLite fallback when no MySQL or `WORDPRESS_DB_*` variables are provided.
 - Apache MPM normalization so only `mpm_prefork` is loaded for WordPress `mod_php`.
 - Old-site source content bundled at `/opt/kameari/source-content`.
 
@@ -47,8 +48,18 @@ If the package is private in GitHub Packages, make it public or configure Railwa
 ghcr.io/tastyheadphones/catholic-kameari:latest
 ```
 
-4. Add a MySQL-compatible database service.
-5. Set these variables on the WordPress service:
+4. Choose one database mode:
+
+### Option A: Single-container mode (no external MySQL)
+
+- Do not set `MYSQL*` or `WORDPRESS_DB_*` variables.
+- On startup, the entrypoint enables the bundled `sqlite-database-integration` plugin and creates `wp-content/db.php`.
+- Keep a persistent volume for uploads (and optionally `wp-content/database` if you want SQLite DB persistence inside the same service volume mapping strategy).
+
+### Option B: MySQL mode
+
+- Add a MySQL-compatible database service.
+- Set these variables on the WordPress service:
 
 ```text
 MYSQLHOST=<railway-mysql-host>
@@ -63,7 +74,7 @@ The image maps those Railway variables to `WORDPRESS_DB_HOST`, `WORDPRESS_DB_NAM
 
 You can also set the `WORDPRESS_DB_*` variables directly. If both are present, the explicit `WORDPRESS_DB_*` values win.
 
-6. Add a Railway volume mounted at:
+5. Add a Railway volume mounted at:
 
 ```text
 /var/www/html/wp-content/uploads
@@ -71,11 +82,11 @@ You can also set the `WORDPRESS_DB_*` variables directly. If both are present, t
 
 Do not mount a volume over the entire `/var/www/html` or `/var/www/html/wp-content` directory in production, because that would hide the packaged theme and plugin files from the image.
 
-7. Deploy the service and open the generated Railway domain.
-8. Complete the WordPress installer.
-9. Activate the Kadence theme and then the Catholic Kameari Kadence child theme.
-10. Activate the recommended plugins.
-11. Import current content and redirects using the migration plan.
+6. Deploy the service and open the generated Railway domain.
+7. Complete the WordPress installer.
+8. Activate the Kadence theme and then the Catholic Kameari Kadence child theme.
+9. Activate the recommended plugins.
+10. Import current content and redirects using the migration plan.
 
 ## Required WordPress Follow-Up
 

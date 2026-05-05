@@ -6,7 +6,7 @@ The recommendation is WordPress with Kadence Theme, Gutenberg, Kadence Blocks, T
 
 [![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new?utm_medium=integration&utm_source=button&utm_campaign=catholic-kameari)
 
-Use the button to open Railway's new project flow, then select **Deploy from GitHub repo** and choose `TastyHeadphones/catholic-kameari`. For production WordPress hosting on Railway, add a MySQL-compatible database service and persistent storage for uploads before launch. If this project is later published as a Railway template, replace the button URL with the generated template URL.
+Use the button to open Railway's new project flow, then select **Deploy from GitHub repo** and choose `TastyHeadphones/catholic-kameari`. The container supports **single-container mode** (no external MySQL) via bundled SQLite, or MySQL mode for production scale. If this project is later published as a Railway template, replace the button URL with the generated template URL.
 
 ## GHCR Docker Image
 
@@ -18,7 +18,10 @@ ghcr.io/tastyheadphones/catholic-kameari:latest
 
 The image includes WordPress PHP 8.2 Apache, the Kadence parent theme, the Catholic Kameari child theme, and the recommended plugin packages. Pushes to `main` automatically publish `latest` and `sha-<commit>` tags through `.github/workflows/publish-ghcr.yml`.
 
-For Railway, create a new service from the Docker image above, add a MySQL-compatible database service, set the `MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, and `MYSQLPASSWORD` variables, and mount persistent storage only for uploads at `/var/www/html/wp-content/uploads`. See `docs/railway-ghcr-deploy.md`.
+For Railway, create a new service from the Docker image above:
+- **Single-container mode (recommended for quick cloud testing):** do not set any MySQL variables. The entrypoint auto-enables SQLite.
+- **MySQL mode:** add a MySQL-compatible database service and set `MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, and `MYSQLPASSWORD`.
+In both modes, mount persistent storage at `/var/www/html/wp-content/uploads`. See `docs/railway-ghcr-deploy.md`.
 
 The image maps Railway's MySQL variables into the `WORDPRESS_DB_*` variables expected by the official WordPress image.
 

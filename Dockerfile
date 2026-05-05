@@ -26,6 +26,7 @@ RUN set -eux; \
       wordfence \
       redirection \
       litespeed-cache \
+      sqlite-database-integration \
     ; do \
       curl -fsSL -o "/tmp/wp-downloads/${plugin}.zip" "https://downloads.wordpress.org/plugin/${plugin}.latest-stable.zip"; \
       unzip -q "/tmp/wp-downloads/${plugin}.zip" -d /usr/src/wordpress/wp-content/plugins; \
