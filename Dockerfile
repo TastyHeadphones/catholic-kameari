@@ -17,6 +17,9 @@ RUN set -eux; \
     mkdir -p /tmp/wp-downloads; \
     curl -fsSL -o /tmp/wp-downloads/kadence.zip https://downloads.wordpress.org/theme/kadence.latest-stable.zip; \
     unzip -q /tmp/wp-downloads/kadence.zip -d /usr/src/wordpress/wp-content/themes; \
+    curl -fsSL -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar; \
+    chmod +x /usr/local/bin/wp; \
+    wp --allow-root --version; \
     for plugin in \
       kadence-blocks \
       the-events-calendar \
@@ -36,6 +39,7 @@ RUN set -eux; \
     rm -rf /tmp/wp-downloads /var/lib/apt/lists/*
 
 COPY config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+COPY --chown=www-data:www-data wp-content/mu-plugins /usr/src/wordpress/wp-content/mu-plugins
 COPY --chown=www-data:www-data wp-content/themes/kameari-kadence-child /usr/src/wordpress/wp-content/themes/kameari-kadence-child
 COPY --chown=www-data:www-data migration/source-content /opt/kameari/source-content
 COPY docker/railway-entrypoint.sh /usr/local/bin/railway-entrypoint.sh

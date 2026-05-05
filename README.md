@@ -6,7 +6,7 @@ The recommendation is WordPress with Kadence Theme, Gutenberg, Kadence Blocks, T
 
 [![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new?utm_medium=integration&utm_source=button&utm_campaign=catholic-kameari)
 
-Use the button to open Railway's new project flow, then select **Deploy from GitHub repo** and choose `TastyHeadphones/catholic-kameari`. The container supports **single-container mode** (no external MySQL) via bundled SQLite, or MySQL mode for production scale. If this project is later published as a Railway template, replace the button URL with the generated template URL.
+Use the button to open Railway's new project flow, then select **Deploy from GitHub repo** and choose `TastyHeadphones/catholic-kameari`. The container supports **single-container mode** (no external MySQL) via bundled SQLite, or MySQL mode for production scale. On an empty deployment it automatically installs WordPress, activates the Catholic Kameari child theme, imports the bundled old-site snapshot, and sets the redesigned homepage. Existing production databases are not overwritten.
 
 ## GHCR Docker Image
 
@@ -19,13 +19,15 @@ ghcr.io/tastyheadphones/catholic-kameari:latest
 The image includes WordPress PHP 8.2 Apache, the Kadence parent theme, the Catholic Kameari child theme, and the recommended plugin packages. Pushes to `main` automatically publish `latest` and `sha-<commit>` tags through `.github/workflows/publish-ghcr.yml`.
 
 For Railway, create a new service from the Docker image above:
-- **Single-container mode (recommended for quick cloud testing):** do not set any MySQL variables. The entrypoint auto-enables SQLite.
+- **Single-container mode (recommended for quick cloud testing):** do not set any MySQL variables. The entrypoint auto-enables SQLite and stores the SQLite database under `/var/www/html/wp-content/uploads/database/.ht.sqlite`.
 - **MySQL mode:** add a MySQL-compatible database service and set `MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, and `MYSQLPASSWORD`.
-In both modes, mount persistent storage at `/var/www/html/wp-content/uploads`. See `docs/railway-ghcr-deploy.md`.
+In both modes, mount persistent storage at `/var/www/html/wp-content/uploads`. For SQLite mode this is required because the database and uploaded media both live under that volume. See `docs/railway-ghcr-deploy.md`.
 
 The image maps Railway's MySQL variables into the `WORDPRESS_DB_*` variables expected by the official WordPress image.
 
-The old-site content snapshot is bundled in the image at `/opt/kameari/source-content`.
+The old-site content snapshot is bundled in the image at `/opt/kameari/source-content`. The first-boot seeder imports the snapshot only when the database is empty or contains only default WordPress sample content.
+
+For production first boot, set `WP_URL`, `WP_ADMIN_USER`, `WP_ADMIN_PASSWORD`, and `WP_ADMIN_EMAIL` in Railway. If no admin password is provided, the container generates one and prints it once in the deploy logs.
 
 Run the same Docker startup smoke test used by GitHub Actions:
 
@@ -81,6 +83,8 @@ docker compose --profile dev up -d adminer
 Adminer will be available at http://localhost:8081.
 
 ## Content Migration
+
+The GHCR/Railway image has an automatic first-boot fallback importer for blank deployments. It uses the bundled public snapshot so the deployed site is not an empty WordPress install.
 
 Preferred migration path:
 

@@ -32,6 +32,8 @@ cleanup
 docker run -d \
   --name "$CONTAINER_NAME" \
   -e PORT=8080 \
+  -e KAMEARI_AUTO_INSTALL=0 \
+  -e KAMEARI_AUTO_SEED=0 \
   -e MYSQLHOST=localhost \
   -e MYSQLPORT=3306 \
   -e MYSQLDATABASE=wordpress \

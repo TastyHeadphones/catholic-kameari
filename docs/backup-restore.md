@@ -36,6 +36,16 @@ docker compose exec -T db mariadb \
 - Redirection plugin export.
 - `.env` values for staging, stored securely.
 
+## Railway SQLite Mode
+
+Single-container Railway deployments store the SQLite database at:
+
+```text
+/var/www/html/wp-content/uploads/database/.ht.sqlite
+```
+
+The Railway volume mounted at `/var/www/html/wp-content/uploads` must be backed up because it contains both uploaded media and the SQLite database. If that volume is removed or replaced, WordPress will start from an empty database and re-import only the bundled public snapshot.
+
 ## Production Backup Recommendation
 
 Use host-level daily backups plus UpdraftPlus scheduled backups to remote storage. Keep at least:
@@ -52,4 +62,3 @@ Always test restore on staging before relying on a backup process.
 2. Update staging first.
 3. Check homepage, Mass page, latest posts, forms, and mobile navigation.
 4. Apply production updates during a low-traffic period.
-

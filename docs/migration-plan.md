@@ -22,6 +22,8 @@ The current public snapshot is stored in `migration/source-content/`:
 - `media-files.json`: source URL to local media path mapping.
 - `manifest.json`: snapshot counts and generated timestamp.
 
+The production Docker image copies this snapshot to `/opt/kameari/source-content`. On an empty first boot, the bundled must-use seeder imports the snapshot, preserves old pages/posts/media, and uses the redesigned child-theme homepage instead of the old homepage layout.
+
 ## Migration Inventory
 
 Use `migration/content-inventory.csv` as the authoritative working inventory. It includes:
