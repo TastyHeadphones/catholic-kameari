@@ -97,8 +97,25 @@ wait_for_wordpress_database() {
   return 1
 }
 
+kameari_fix_runtime_permissions() {
+  # Anything created by root during install/seed needs to be readable and
+  # writable by www-data at runtime. The sqlite plugin's prepare_directory()
+  # in particular creates the SQLite directory with mode 0704, which leaves
+  # apache unable to write to it.
+  chown -R www-data:www-data \
+    /var/www/html/wp-content/uploads \
+    /var/www/html/wp-content/mu-plugins \
+    /var/www/html/wp-content/themes 2>/dev/null || true
+
+  if [ -n "${KAMEARI_SQLITE_DIR:-}" ] && [ -d "$KAMEARI_SQLITE_DIR" ]; then
+    chown -R www-data:www-data "$KAMEARI_SQLITE_DIR" 2>/dev/null || true
+    chmod 0775 "$KAMEARI_SQLITE_DIR" 2>/dev/null || true
+  fi
+}
+
 kameari_seed_content() {
   if is_false "${KAMEARI_AUTO_SEED:-1}"; then
+    kameari_fix_runtime_permissions
     return
   fi
 
@@ -106,7 +123,7 @@ kameari_seed_content() {
     echo "Automatic Catholic Kameari content import did not complete; the must-use seeder will retry on the next WordPress request." >&2
   fi
 
-  chown -R www-data:www-data /var/www/html/wp-content/uploads /var/www/html/wp-content/mu-plugins /var/www/html/wp-content/themes 2>/dev/null || true
+  kameari_fix_runtime_permissions
 }
 
 kameari_auto_install_and_seed() {
@@ -212,19 +229,61 @@ sync_packaged_wordpress_files
 
 if [ -z "${WORDPRESS_DB_HOST:-}" ] && [ -z "${MYSQLHOST:-}" ]; then
   echo "No MySQL variables detected. Enabling SQLite mode for single-container deployment."
-  sqlite_main_file="${SQLITE_MAIN_FILE:-/var/www/html/wp-content/uploads/database/.ht.sqlite}"
+  # The sqlite-database-integration plugin selects its database location from
+  # the DB_DIR / DB_FILE constants (see plugins/sqlite-database-integration/
+  # constants.php). SQLITE_MAIN_FILE only points at the plugin's main entry
+  # file; defining it does not relocate the database. We accept the legacy
+  # SQLITE_MAIN_FILE env var as a hint for backwards compatibility, but the
+  # canonical configuration is KAMEARI_SQLITE_DIR / KAMEARI_SQLITE_FILE.
+  default_sqlite_dir="/var/www/html/wp-content/uploads/database"
+  default_sqlite_file=".ht.sqlite"
+
+  if [ -n "${KAMEARI_SQLITE_DIR:-}" ]; then
+    sqlite_dir="${KAMEARI_SQLITE_DIR%/}"
+  elif [ -n "${SQLITE_MAIN_FILE:-}" ]; then
+    sqlite_dir="$(dirname "$SQLITE_MAIN_FILE")"
+  else
+    sqlite_dir="$default_sqlite_dir"
+  fi
+
+  if [ -n "${KAMEARI_SQLITE_FILE:-}" ]; then
+    sqlite_file="$KAMEARI_SQLITE_FILE"
+  elif [ -n "${SQLITE_MAIN_FILE:-}" ]; then
+    sqlite_file="$(basename "$SQLITE_MAIN_FILE")"
+  else
+    sqlite_file="$default_sqlite_file"
+  fi
+
   legacy_sqlite_file="/var/www/html/wp-content/database/.ht.sqlite"
-  export SQLITE_MAIN_FILE="$sqlite_main_file"
+  export KAMEARI_SQLITE_DIR="$sqlite_dir"
+  export KAMEARI_SQLITE_FILE="$sqlite_file"
+  export SQLITE_MAIN_FILE="${sqlite_dir}/${sqlite_file}"
   export WORDPRESS_DB_HOST="${WORDPRESS_DB_HOST:-localhost}"
   export WORDPRESS_DB_NAME="${WORDPRESS_DB_NAME:-wordpress}"
   export WORDPRESS_DB_USER="${WORDPRESS_DB_USER:-wordpress}"
   export WORDPRESS_DB_PASSWORD="${WORDPRESS_DB_PASSWORD:-wordpress}"
-  append_wordpress_config "define('SQLITE_MAIN_FILE', getenv('SQLITE_MAIN_FILE') ?: '${sqlite_main_file}');"
-  mkdir -p "$(dirname "$sqlite_main_file")"
-  if [ -f "$legacy_sqlite_file" ] && [ ! -f "$sqlite_main_file" ]; then
-    cp "$legacy_sqlite_file" "$sqlite_main_file"
+
+  append_wordpress_config "define('DB_DIR', (getenv('KAMEARI_SQLITE_DIR') ?: '${sqlite_dir}') . '/');"
+  append_wordpress_config "define('DB_FILE', getenv('KAMEARI_SQLITE_FILE') ?: '${sqlite_file}');"
+  append_wordpress_config "define('SQLITE_MAIN_FILE', getenv('SQLITE_MAIN_FILE') ?: '${sqlite_dir}/${sqlite_file}');"
+
+  # Pre-create the database directory with www-data ownership and a mode that
+  # both root (for entrypoint installs) and www-data (for runtime requests)
+  # can write. Without this, the sqlite plugin's prepare_directory() runs as
+  # root with umask 0000 + mkdir 0704, leaving the directory unwritable for
+  # www-data and producing "Unable to create a file in the directory!" 500s.
+  mkdir -p "$sqlite_dir"
+  chown -R www-data:www-data "$sqlite_dir"
+  chmod 0775 "$sqlite_dir"
+
+  # Migrate any database created by an older entrypoint at the legacy path
+  # outside the persistent uploads volume. Only copy when the new location is
+  # empty so we never clobber real data.
+  if [ -f "$legacy_sqlite_file" ] && [ ! -f "${sqlite_dir}/${sqlite_file}" ]; then
+    cp "$legacy_sqlite_file" "${sqlite_dir}/${sqlite_file}"
+    chown www-data:www-data "${sqlite_dir}/${sqlite_file}"
   fi
-  chown -R www-data:www-data "$(dirname "$sqlite_main_file")"
+
   if [ -f /usr/src/wordpress/wp-content/plugins/sqlite-database-integration/db.copy ]; then
     cp /usr/src/wordpress/wp-content/plugins/sqlite-database-integration/db.copy /var/www/html/wp-content/db.php
   fi

@@ -73,4 +73,63 @@ fi
 
 curl -fsS "http://localhost:${HOST_PORT}/" >/dev/null || true
 
+cleanup
+
+# Single-container SQLite mode: a fresh boot must install WordPress, seed
+# content, and serve HTTP 200 from the redesigned site. This guards against
+# the entrypoint placing the SQLite database outside the persistent uploads
+# volume or leaving it owned by root with permissions www-data cannot write.
+SQLITE_HOST_PORT="${SQLITE_HOST_PORT:-18081}"
+SQLITE_VOLUME="${SQLITE_VOLUME:-catholic-kameari-smoke-uploads}"
+docker volume rm "$SQLITE_VOLUME" >/dev/null 2>&1 || true
+docker volume create "$SQLITE_VOLUME" >/dev/null
+
+sqlite_cleanup() {
+  docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+  docker volume rm "$SQLITE_VOLUME" >/dev/null 2>&1 || true
+}
+
+trap sqlite_cleanup EXIT
+
+docker run -d \
+  --name "$CONTAINER_NAME" \
+  -e WP_URL="http://localhost:${SQLITE_HOST_PORT}" \
+  -e WP_ADMIN_USER=smoke \
+  -e WP_ADMIN_PASSWORD=smoke-test-password \
+  -e WP_ADMIN_EMAIL=smoke@example.com \
+  -v "${SQLITE_VOLUME}:/var/www/html/wp-content/uploads" \
+  -p "${SQLITE_HOST_PORT}:80" \
+  "$IMAGE_NAME" >/dev/null
+
+# Wait for the install + seed to finish and the site to start serving 200.
+status=000
+for _ in $(seq 1 60); do
+  status="$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:${SQLITE_HOST_PORT}/" || echo 000)"
+  if [ "$status" = "200" ]; then
+    break
+  fi
+  sleep 2
+done
+
+if [ "$status" != "200" ]; then
+  echo "SQLite-mode boot failed (status ${status})." >&2
+  docker logs "$CONTAINER_NAME" 2>&1 | tail -50 >&2
+  exit 1
+fi
+
+# The SQLite database must live inside the persistent uploads volume so a
+# Railway redeploy does not wipe imported content.
+if ! docker exec "$CONTAINER_NAME" test -f /var/www/html/wp-content/uploads/database/.ht.sqlite; then
+  echo "SQLite database is not located under the persistent uploads volume." >&2
+  docker exec "$CONTAINER_NAME" find /var/www/html/wp-content -name '*.sqlite*' >&2 || true
+  exit 1
+fi
+
+# The legacy default location must NOT contain the live database, otherwise
+# a redeploy would wipe content.
+if docker exec "$CONTAINER_NAME" test -f /var/www/html/wp-content/database/.ht.sqlite; then
+  echo "SQLite database leaked into the ephemeral wp-content/database/ path." >&2
+  exit 1
+fi
+
 echo "Docker smoke test passed."
