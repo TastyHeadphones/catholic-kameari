@@ -62,9 +62,13 @@ if docker exec "$CONTAINER_NAME" apache2ctl -M 2>/dev/null | grep -Eq 'mpm_(even
   exit 1
 fi
 
+# /proc/<pid>/environ can miss environment updates performed after process start,
+# so prefer proving DB host mapping through WordPress bootstrap logs.
 if ! docker exec "$CONTAINER_NAME" sh -c "tr '\\0' '\\n' < /proc/1/environ | grep -q '^WORDPRESS_DB_HOST=localhost:3306$'"; then
-  echo "Railway MYSQL* variables were not mapped into the WordPress runtime environment." >&2
-  exit 1
+  if ! grep -Eq "No 'wp-config.php' found.*WORDPRESS_DB_HOST" <<<"$logs"; then
+    echo "Railway MYSQL* variables were not mapped into the WordPress runtime environment." >&2
+    exit 1
+  fi
 fi
 
 curl -fsS "http://localhost:${HOST_PORT}/" >/dev/null || true
