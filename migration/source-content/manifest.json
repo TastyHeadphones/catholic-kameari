@@ -1,0 +1,38 @@
+{
+  "source_url": "https://catholic-kameari.jp",
+  "generated_at": "2026-05-05T06:40:35.128Z",
+  "endpoints": {
+    "pages": {
+      "count": 19,
+      "reported_total": 19,
+      "total_pages": 1
+    },
+    "posts": {
+      "count": 88,
+      "reported_total": 88,
+      "total_pages": 1
+    },
+    "categories": {
+      "count": 6,
+      "reported_total": 6,
+      "total_pages": 1
+    },
+    "tags": {
+      "count": 129,
+      "reported_total": 129,
+      "total_pages": 2
+    },
+    "media": {
+      "count": 189,
+      "reported_total": 189,
+      "total_pages": 2
+    },
+    "users": {
+      "count": 2,
+      "reported_total": 2,
+      "total_pages": 1
+    }
+  },
+  "media_downloaded": true,
+  "media_download_count": 189
+}

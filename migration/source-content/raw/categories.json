@@ -1,0 +1,62 @@
+[
+  {
+    "id": 7,
+    "count": 68,
+    "description": "",
+    "link": "https://catholic-kameari.jp/category/news/",
+    "name": "お知らせ",
+    "slug": "news",
+    "taxonomy": "category",
+    "parent": 0
+  },
+  {
+    "id": 8,
+    "count": 20,
+    "description": "",
+    "link": "https://catholic-kameari.jp/category/topics/",
+    "name": "トピックス",
+    "slug": "topics",
+    "taxonomy": "category",
+    "parent": 0
+  },
+  {
+    "id": 5,
+    "count": 4,
+    "description": "",
+    "link": "https://catholic-kameari.jp/category/news/liturgy/",
+    "name": "典礼行事",
+    "slug": "liturgy",
+    "taxonomy": "category",
+    "parent": 7
+  },
+  {
+    "id": 10,
+    "count": 1,
+    "description": "",
+    "link": "https://catholic-kameari.jp/category/news/event/",
+    "name": "教会行事",
+    "slug": "event",
+    "taxonomy": "category",
+    "parent": 7
+  },
+  {
+    "id": 9,
+    "count": 60,
+    "description": "",
+    "link": "https://catholic-kameari.jp/category/news/monthly_schedule/",
+    "name": "月間予定",
+    "slug": "monthly_schedule",
+    "taxonomy": "category",
+    "parent": 7
+  },
+  {
+    "id": 1,
+    "count": 0,
+    "description": "",
+    "link": "https://catholic-kameari.jp/category/uncategorized/",
+    "name": "未分類",
+    "slug": "uncategorized",
+    "taxonomy": "category",
+    "parent": 0
+  }
+]

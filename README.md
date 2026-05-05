@@ -18,7 +18,11 @@ ghcr.io/tastyheadphones/catholic-kameari:latest
 
 The image includes WordPress PHP 8.2 Apache, the Kadence parent theme, the Catholic Kameari child theme, and the recommended plugin packages. Pushes to `main` automatically publish `latest` and `sha-<commit>` tags through `.github/workflows/publish-ghcr.yml`.
 
-For Railway, create a new service from the Docker image above, add a MySQL-compatible database service, set the `WORDPRESS_DB_*` variables, and mount persistent storage only for uploads at `/var/www/html/wp-content/uploads`. See `docs/railway-ghcr-deploy.md`.
+For Railway, create a new service from the Docker image above, add a MySQL-compatible database service, set the `MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`, `MYSQLUSER`, and `MYSQLPASSWORD` variables, and mount persistent storage only for uploads at `/var/www/html/wp-content/uploads`. See `docs/railway-ghcr-deploy.md`.
+
+The image maps Railway's MySQL variables into the `WORDPRESS_DB_*` variables expected by the official WordPress image.
+
+The old-site content snapshot is bundled in the image at `/opt/kameari/source-content`.
 
 Run the same Docker startup smoke test used by GitHub Actions:
 
@@ -93,6 +97,7 @@ The fallback preserves visible page/post content, slugs, dates, and categories, 
 ## Migration Deliverables
 
 - `migration/content-inventory.csv`: 19 pages and 88 posts discovered from the current site.
+- `migration/source-content/`: full public snapshot fetched from the old site, including REST JSON, rendered page/post HTML, and 189 original media files.
 - `migration/redirect-map.csv`: old URL to planned new URL map.
 - `migration/redirection-plugin-import.csv`: 301 redirects for the Redirection plugin.
 - `migration/manual-confirmation-notes.md`: items that must be checked before launch.
@@ -102,6 +107,7 @@ Refresh these files after the current site changes:
 
 ```bash
 ./scripts/generate-migration-inventory.mjs
+./scripts/fetch-current-site-content.mjs
 ```
 
 ## Documentation

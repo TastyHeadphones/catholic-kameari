@@ -19,10 +19,11 @@ trap cleanup EXIT
 docker build -t "$IMAGE_NAME" .
 
 docker run --rm \
-  -e WORDPRESS_DB_HOST=localhost \
-  -e WORDPRESS_DB_NAME=wordpress \
-  -e WORDPRESS_DB_USER=wordpress \
-  -e WORDPRESS_DB_PASSWORD=wordpress \
+  -e MYSQLHOST=localhost \
+  -e MYSQLPORT=3306 \
+  -e MYSQLDATABASE=wordpress \
+  -e MYSQLUSER=wordpress \
+  -e MYSQLPASSWORD=wordpress \
   "$IMAGE_NAME" \
   apache2ctl -t
 
@@ -31,10 +32,11 @@ cleanup
 docker run -d \
   --name "$CONTAINER_NAME" \
   -e PORT=8080 \
-  -e WORDPRESS_DB_HOST=localhost \
-  -e WORDPRESS_DB_NAME=wordpress \
-  -e WORDPRESS_DB_USER=wordpress \
-  -e WORDPRESS_DB_PASSWORD=wordpress \
+  -e MYSQLHOST=localhost \
+  -e MYSQLPORT=3306 \
+  -e MYSQLDATABASE=wordpress \
+  -e MYSQLUSER=wordpress \
+  -e MYSQLPASSWORD=wordpress \
   -p "${HOST_PORT}:8080" \
   "$IMAGE_NAME" >/dev/null
 
@@ -58,7 +60,11 @@ if docker exec "$CONTAINER_NAME" apache2ctl -M 2>/dev/null | grep -Eq 'mpm_(even
   exit 1
 fi
 
+if ! docker exec "$CONTAINER_NAME" sh -c "tr '\\0' '\\n' < /proc/1/environ | grep -q '^WORDPRESS_DB_HOST=localhost:3306$'"; then
+  echo "Railway MYSQL* variables were not mapped into the WordPress runtime environment." >&2
+  exit 1
+fi
+
 curl -fsS "http://localhost:${HOST_PORT}/" >/dev/null || true
 
 echo "Docker smoke test passed."
-

@@ -14,7 +14,9 @@ The image includes:
 - Recommended plugin packages: Kadence Blocks, The Events Calendar, Contact Form 7, Yoast SEO, UpdraftPlus, Wordfence, Redirection, and LiteSpeed Cache.
 - PHP upload configuration from `config/uploads.ini`.
 - A Railway-aware entrypoint that honors Railway's `$PORT` variable.
+- Automatic mapping from Railway MySQL variables to WordPress database variables.
 - Apache MPM normalization so only `mpm_prefork` is loaded for WordPress `mod_php`.
+- Old-site source content bundled at `/opt/kameari/source-content`.
 
 ## Publish Flow
 
@@ -49,12 +51,17 @@ ghcr.io/tastyheadphones/catholic-kameari:latest
 5. Set these variables on the WordPress service:
 
 ```text
-WORDPRESS_DB_HOST=<railway-mysql-host-and-port>
-WORDPRESS_DB_NAME=<database-name>
-WORDPRESS_DB_USER=<database-user>
-WORDPRESS_DB_PASSWORD=<database-password>
+MYSQLHOST=<railway-mysql-host>
+MYSQLPORT=<railway-mysql-port>
+MYSQLDATABASE=<database-name>
+MYSQLUSER=<database-user>
+MYSQLPASSWORD=<database-password>
 WP_ENVIRONMENT_TYPE=production
 ```
+
+The image maps those Railway variables to `WORDPRESS_DB_HOST`, `WORDPRESS_DB_NAME`, `WORDPRESS_DB_USER`, and `WORDPRESS_DB_PASSWORD` before the official WordPress entrypoint creates `wp-config.php`.
+
+You can also set the `WORDPRESS_DB_*` variables directly. If both are present, the explicit `WORDPRESS_DB_*` values win.
 
 6. Add a Railway volume mounted at:
 
@@ -76,7 +83,7 @@ After the first successful deploy:
 
 - Set permalinks to `/%year%/%postname%/`.
 - Confirm the homepage is the redesigned page.
-- Import the content inventory and redirects as described in `docs/migration-plan.md`.
+- Import the source content snapshot and redirects as described in `docs/migration-plan.md`.
 - Configure backups before launch.
 - Connect the final domain and verify SSL.
 

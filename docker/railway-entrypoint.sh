@@ -13,6 +13,22 @@ if [ ! -e /etc/apache2/mods-enabled/mpm_prefork.load ]; then
   a2enmod mpm_prefork >/dev/null
 fi
 
+if [ -z "${WORDPRESS_DB_HOST:-}" ] && [ -n "${MYSQLHOST:-}" ]; then
+  export WORDPRESS_DB_HOST="${MYSQLHOST}${MYSQLPORT:+:${MYSQLPORT}}"
+fi
+
+if [ -z "${WORDPRESS_DB_NAME:-}" ] && [ -n "${MYSQLDATABASE:-}" ]; then
+  export WORDPRESS_DB_NAME="${MYSQLDATABASE}"
+fi
+
+if [ -z "${WORDPRESS_DB_USER:-}" ] && [ -n "${MYSQLUSER:-}" ]; then
+  export WORDPRESS_DB_USER="${MYSQLUSER}"
+fi
+
+if [ -z "${WORDPRESS_DB_PASSWORD:-}" ] && [ -n "${MYSQLPASSWORD:-}" ]; then
+  export WORDPRESS_DB_PASSWORD="${MYSQLPASSWORD}"
+fi
+
 if [ -n "${PORT:-}" ] && [ "${PORT}" != "80" ]; then
   sed -ri "s/^Listen 80$/Listen ${PORT}/" /etc/apache2/ports.conf
   sed -ri "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf

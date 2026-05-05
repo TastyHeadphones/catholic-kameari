@@ -8,7 +8,19 @@ The current site is WordPress using Lightning Theme, VK All in One Expansion Uni
 
 - 19 fixed pages.
 - 88 posts.
+- 189 media items.
+- 129 tags.
+- 6 categories.
 - Categories: お知らせ, トピックス, 典礼行事, 教会行事, 月間予定.
+
+The current public snapshot is stored in `migration/source-content/`:
+
+- `raw/*.json`: site, page, post, category, tag, media, and user REST API responses.
+- `rendered-html/pages/`: rendered HTML for all fixed pages.
+- `rendered-html/posts/`: rendered HTML for all posts.
+- `media/`: downloaded original media files from `/wp-content/uploads/`.
+- `media-files.json`: source URL to local media path mapping.
+- `manifest.json`: snapshot counts and generated timestamp.
 
 ## Migration Inventory
 
@@ -49,6 +61,13 @@ If the current admin export is unavailable:
 
 This imports visible rendered HTML from the public WordPress REST API. It preserves meaning, titles, slugs, dates, and categories, but does not preserve original block source, all media metadata, or authors as cleanly as a WXR export.
 
+Refresh the source snapshot before launch:
+
+```bash
+./scripts/fetch-current-site-content.mjs
+./scripts/generate-migration-inventory.mjs
+```
+
 ## Content Rules
 
 - Preserve Japanese as the primary language.
@@ -74,4 +93,3 @@ This imports visible rendered HTML from the public WordPress REST API. It preser
 - Import redirects.
 - Submit sitemap in Google Search Console.
 - Verify backups can be restored.
-

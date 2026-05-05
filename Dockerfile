@@ -36,6 +36,7 @@ RUN set -eux; \
 
 COPY config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 COPY --chown=www-data:www-data wp-content/themes/kameari-kadence-child /usr/src/wordpress/wp-content/themes/kameari-kadence-child
+COPY --chown=www-data:www-data migration/source-content /opt/kameari/source-content
 COPY docker/railway-entrypoint.sh /usr/local/bin/railway-entrypoint.sh
 
 RUN chmod +x /usr/local/bin/railway-entrypoint.sh

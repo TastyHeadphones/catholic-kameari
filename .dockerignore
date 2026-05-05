@@ -13,5 +13,11 @@ wp-content/upgrade
 wp-content/uploads
 wp-content/plugins
 docs
-migration
-
+migration/*
+!migration/source-content
+!migration/source-content/**
+!migration/content-inventory.csv
+!migration/redirect-map.csv
+!migration/redirection-plugin-import.csv
+!migration/manual-confirmation-notes.md
+!migration/duplicate-outdated-notes.md
