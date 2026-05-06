@@ -85,7 +85,11 @@ wait_for_wordpress_database() {
     fi
 
     output="$(kameari_wp core is-installed 2>&1 || true)"
-    if grep -Eqi 'Error establishing a database connection|connection refused|access denied|unknown host|unknown database|SQLSTATE|could not find driver|No such file|php_network_getaddresses|connection timed out|can'\''t connect' <<<"$output"; then
+    # Only retry on errors that mean the database server is unreachable.
+    # "no such table" / "table doesn't exist" mean the DB itself is reachable
+    # but uninitialized — that's expected on the first boot and we should fall
+    # through to the install step rather than spin-waiting.
+    if grep -Eqi 'Error establishing a database connection|connection refused|access denied|unknown host|unknown database|could not find driver|php_network_getaddresses|connection timed out|can'\''t connect|server has gone away' <<<"$output"; then
       sleep 2
       continue
     fi

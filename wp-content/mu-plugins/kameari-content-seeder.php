@@ -13,13 +13,73 @@ if (! defined('ABSPATH')) {
 final class Kameari_Content_Seeder
 {
     private const OPTION_SEEDED = 'kameari_content_seeded_version';
+    private const OPTION_MENU_SEEDED = 'kameari_menu_seeded_version';
     private const OPTION_ERROR = 'kameari_content_seed_last_error';
-    private const SOURCE_VERSION = '2026-05-05-public-snapshot';
+    private const SOURCE_VERSION = '2026-05-06-redesign-v2';
+    private const MENU_VERSION = '2026-05-06-redesign-v2';
     private const DEFAULT_SOURCE_DIR = '/opt/kameari/source-content';
 
     public static function boot(): void
     {
         add_action('init', [__CLASS__, 'maybe_seed'], 1);
+        add_action('init', [__CLASS__, 'ensure_menu_location'], 20);
+    }
+
+    /**
+     * Re-assert the Primary menu's location on every request. WordPress'
+     * after_switch_theme handler can wipe nav_menu_locations on the request
+     * immediately following a theme switch, so a one-shot set during the seed
+     * does not always stick.
+     */
+    public static function ensure_menu_location(): void
+    {
+        global $wpdb;
+
+        // Guard: skip until WordPress is fully installed. Calling DB functions
+        // before the schema exists raises SQLSTATE errors, and the entrypoint's
+        // database-readiness probe matches "SQLSTATE" and stalls the install.
+        if (function_exists('wp_installing') && wp_installing()) {
+            return;
+        }
+
+        if (! isset($wpdb)) {
+            return;
+        }
+
+        $previous_suppress = $wpdb->suppress_errors(true);
+        $previous_show = $wpdb->show_errors(false);
+        $seeded = get_option(self::OPTION_SEEDED);
+        $wpdb->suppress_errors($previous_suppress);
+        $wpdb->show_errors($previous_show);
+
+        if (! $seeded) {
+            return;
+        }
+
+        $previous_suppress = $wpdb->suppress_errors(true);
+        $previous_show = $wpdb->show_errors(false);
+        $menu = wp_get_nav_menu_object('Primary');
+        $wpdb->suppress_errors($previous_suppress);
+        $wpdb->show_errors($previous_show);
+
+        if (! $menu) {
+            return;
+        }
+
+        $menu_id = (int) $menu->term_id;
+        $locations = (array) get_theme_mod('nav_menu_locations', []);
+        $changed = false;
+
+        foreach (['primary', 'main', 'main_navigation', 'mobile', 'header_menu', 'menu-1'] as $location) {
+            if (($locations[$location] ?? 0) !== $menu_id) {
+                $locations[$location] = $menu_id;
+                $changed = true;
+            }
+        }
+
+        if ($changed) {
+            set_theme_mod('nav_menu_locations', $locations);
+        }
     }
 
     public static function maybe_seed(): void
@@ -60,6 +120,13 @@ final class Kameari_Content_Seeder
         set_transient('kameari_content_seed_lock', time(), 10 * MINUTE_IN_SECONDS);
         @set_time_limit(600);
 
+        // Strip the kses filters so that wp_insert_post / wp_update_post stop
+        // throwing away iframes, scripts, and other markup we intentionally
+        // include in our patterns. Re-enabled in the finally block.
+        if (function_exists('kses_remove_filters')) {
+            kses_remove_filters();
+        }
+
         try {
             self::load_admin_includes();
             self::remove_sample_content();
@@ -83,6 +150,9 @@ final class Kameari_Content_Seeder
             update_option(self::OPTION_ERROR, $exception->getMessage(), false);
             self::log('Catholic Kameari content seed failed: ' . $exception->getMessage(), true);
         } finally {
+            if (function_exists('kses_init_filters')) {
+                kses_init_filters();
+            }
             delete_transient('kameari_content_seed_lock');
         }
     }
@@ -433,7 +503,13 @@ final class Kameari_Content_Seeder
         self::upsert_manual_page(
             'news',
             'お知らせ',
-            '<!-- wp:heading --><h2 class="wp-block-heading">お知らせ</h2><!-- /wp:heading --><!-- wp:shortcode -->[kameari_posts category="news" posts_per_page="12"]<!-- /wp:shortcode -->',
+            self::build_listing_page_content(
+                'Latest News',
+                'お知らせ',
+                '教会からの最新のお知らせをご覧いただけます。',
+                'news',
+                12
+            ),
             0,
             30
         );
@@ -441,7 +517,13 @@ final class Kameari_Content_Seeder
         self::upsert_manual_page(
             'topics',
             'トピックス',
-            '<!-- wp:heading --><h2 class="wp-block-heading">トピックス</h2><!-- /wp:heading --><!-- wp:shortcode -->[kameari_posts category="topics" posts_per_page="12"]<!-- /wp:shortcode -->',
+            self::build_listing_page_content(
+                'Topics',
+                'トピックス',
+                '教会の活動、ご報告、シーズンのご案内などをお届けします。',
+                'topics',
+                12
+            ),
             0,
             31
         );
@@ -455,10 +537,56 @@ final class Kameari_Content_Seeder
         self::upsert_manual_page(
             'schedule/monthly',
             '月間予定',
-            '<!-- wp:heading --><h2 class="wp-block-heading">月間予定</h2><!-- /wp:heading --><!-- wp:shortcode -->[kameari_posts category="monthly_schedule" posts_per_page="12"]<!-- /wp:shortcode -->',
+            self::build_listing_page_content(
+                'Monthly Schedule',
+                '月間予定',
+                '今月のミサ、行事、共同体の集いの予定です。',
+                'monthly_schedule',
+                12
+            ),
             $schedule_id,
             22
         );
+    }
+
+    private static function build_listing_page_content(
+        string $eyebrow,
+        string $title,
+        string $intro,
+        string $category_slug,
+        int $posts_per_page
+    ): string {
+        $eyebrow = esc_html($eyebrow);
+        $title = esc_html($title);
+        $intro = esc_html($intro);
+        $shortcode = sprintf(
+            '[kameari_posts category="%s" posts_per_page="%d"]',
+            esc_attr($category_slug),
+            $posts_per_page
+        );
+
+        return <<<HTML
+<!-- wp:group {"align":"full","className":"kameari-section kameari-section--cream","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull kameari-section kameari-section--cream"><!-- wp:group {"className":"kameari-inner","layout":{"type":"constrained"}} -->
+<div class="wp-block-group kameari-inner"><!-- wp:html -->
+<div style="text-align:center;">
+  <p class="kameari-eyebrow">{$eyebrow}</p>
+  <h1 class="kameari-display">{$title}</h1>
+  <hr class="kameari-rule" style="margin-left:auto;margin-right:auto;" />
+  <p class="kameari-lead">{$intro}</p>
+</div>
+<!-- /wp:html --></div>
+<!-- /wp:group --></div>
+<!-- /wp:group -->
+
+<!-- wp:group {"align":"full","className":"kameari-section kameari-section--white","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull kameari-section kameari-section--white"><!-- wp:group {"className":"kameari-inner","layout":{"type":"constrained"}} -->
+<div class="wp-block-group kameari-inner"><!-- wp:shortcode -->
+{$shortcode}
+<!-- /wp:shortcode --></div>
+<!-- /wp:group --></div>
+<!-- /wp:group -->
+HTML;
     }
 
     private static function upsert_manual_page(
@@ -544,42 +672,54 @@ final class Kameari_Content_Seeder
             return;
         }
 
-        $existing_object_ids = [];
-        $existing_items = wp_get_nav_menu_items($menu_id);
-        foreach ((array) $existing_items as $item) {
-            if (isset($item->object_id)) {
-                $existing_object_ids[] = (int) $item->object_id;
-            }
-        }
-
         $items = [
-            ['schedule/mass', 'ミサ'],
-            ['about/visitors', '初めての方へ'],
-            ['about', '教会紹介'],
-            ['news', 'お知らせ'],
-            ['topics', 'トピックス'],
-            ['commit', '教会活動'],
-            ['memorial', '結婚式・葬儀'],
-            ['access', 'アクセス'],
+            ['about',           '教会紹介'],
+            ['about/visitors',  '初めての方へ'],
+            ['schedule/mass',   'ミサ'],
+            ['news',            'お知らせ'],
+            ['topics',          'トピックス'],
+            ['commit',          '教会活動'],
+            ['memorial',        '結婚式・葬儀'],
+            ['access',          'アクセス'],
         ];
 
-        foreach ($items as [$path, $title]) {
-            $page = get_page_by_path($path, OBJECT, 'page');
-            if (! $page instanceof WP_Post || in_array((int) $page->ID, $existing_object_ids, true)) {
-                continue;
+        $existing_items = wp_get_nav_menu_items($menu_id) ?: [];
+        $menu_version = (string) get_option(self::OPTION_MENU_SEEDED, '');
+        $rebuild = self::env_is_true('KAMEARI_FORCE_SEED')
+            || $menu_version !== self::MENU_VERSION
+            || empty($existing_items);
+
+        if ($rebuild) {
+            foreach ($existing_items as $item) {
+                wp_delete_post((int) $item->ID, true);
             }
 
-            wp_update_nav_menu_item($menu_id, 0, [
-                'menu-item-title' => $title,
-                'menu-item-object' => 'page',
-                'menu-item-object-id' => (int) $page->ID,
-                'menu-item-type' => 'post_type',
-                'menu-item-status' => 'publish',
-            ]);
+            foreach ($items as $position => [$path, $title]) {
+                $page = get_page_by_path($path, OBJECT, 'page');
+                if (! $page instanceof WP_Post) {
+                    continue;
+                }
+
+                wp_update_nav_menu_item($menu_id, 0, [
+                    'menu-item-title'     => $title,
+                    'menu-item-object'    => 'page',
+                    'menu-item-object-id' => (int) $page->ID,
+                    'menu-item-type'      => 'post_type',
+                    'menu-item-status'    => 'publish',
+                    'menu-item-position'  => $position + 1,
+                ]);
+            }
+
+            update_option(self::OPTION_MENU_SEEDED, self::MENU_VERSION, false);
         }
 
+        // Assign to every common location used by Kadence and similar themes
+        // so the navigation actually renders instead of falling back to a
+        // wp_list_pages dump.
         $locations = (array) get_theme_mod('nav_menu_locations', []);
-        $locations['primary'] = $menu_id;
+        foreach (['primary', 'main', 'main_navigation', 'mobile', 'header_menu', 'menu-1'] as $location) {
+            $locations[$location] = $menu_id;
+        }
         set_theme_mod('nav_menu_locations', $locations);
     }
 

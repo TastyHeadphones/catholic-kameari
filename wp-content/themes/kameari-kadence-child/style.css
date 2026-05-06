@@ -1,10 +1,10 @@
 /*
 Theme Name: Catholic Kameari Kadence Child
 Theme URI: https://catholic-kameari.jp/
-Description: Calm, accessible Kadence child theme for Catholic Kameari Church, St. Francis of Assisi, Tokyo.
+Description: Modern, premium Kadence child theme for Catholic Kameari Church, St. Francis of Assisi, Tokyo. Inspired by stlouiswaco.com.
 Author: Catholic Kameari Church
 Template: kadence
-Version: 0.1.0
+Version: 0.2.0
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.2
@@ -12,16 +12,30 @@ Text Domain: kameari
 */
 
 :root {
-  --kameari-ivory: #f8f4ec;
-  --kameari-warm-white: #fffdf8;
-  --kameari-green: #1f4d3a;
-  --kameari-navy: #1d2b3a;
-  --kameari-gold: #b89b5e;
-  --kameari-charcoal: #242424;
-  --kameari-beige: #e8ddc8;
-  --kameari-gray: #f3f3f0;
-  --kameari-border: rgba(31, 77, 58, 0.16);
-  --kameari-shadow: 0 18px 50px rgba(29, 43, 58, 0.11);
+  --kameari-navy: #142036;
+  --kameari-navy-dark: #0d1828;
+  --kameari-navy-soft: #243757;
+  --kameari-olive: #8a7e2d;
+  --kameari-olive-dark: #6e6422;
+  --kameari-olive-soft: #b3a44a;
+  --kameari-sand: #ece4d0;
+  --kameari-sand-soft: #f5efe0;
+  --kameari-cream: #faf6ec;
+  --kameari-ivory: #fbfaf6;
+  --kameari-white: #ffffff;
+  --kameari-text: #2a2f3a;
+  --kameari-text-soft: #576278;
+  --kameari-border: rgba(20, 32, 54, 0.12);
+  --kameari-shadow: 0 24px 48px rgba(20, 32, 54, 0.10);
+  --kameari-shadow-strong: 0 30px 70px rgba(20, 32, 54, 0.18);
+  --kameari-display: "Cormorant Garamond", "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  --kameari-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", Georgia, serif;
+  --kameari-sans: "Inter", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", Meiryo, system-ui, sans-serif;
+  --kameari-radius-sm: 4px;
+  --kameari-radius: 10px;
+  --kameari-radius-lg: 22px;
+  --kameari-content-width: 1240px;
+  --kameari-narrow-width: 880px;
 }
 
 html {
@@ -30,33 +44,33 @@ html {
 
 body {
   background: var(--kameari-ivory);
-  color: var(--kameari-charcoal);
-  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
-  font-size: 18px;
-  line-height: 1.85;
-  letter-spacing: 0;
+  color: var(--kameari-text);
+  font-family: var(--kameari-sans);
+  font-size: 17px;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-h3,
-h4,
-.site-title {
+h1, h2, h3, h4, h5, h6,
+.site-title,
+.entry-title {
   color: var(--kameari-navy);
-  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", Georgia, serif;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1.35;
+  font-family: var(--kameari-serif);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 1.3;
 }
 
 a {
-  color: var(--kameari-green);
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.16em;
+  color: var(--kameari-olive);
+  text-decoration: none;
+  transition: color 0.18s ease;
 }
 
 a:hover {
-  color: var(--kameari-navy);
+  color: var(--kameari-olive-dark);
 }
 
 a:focus-visible,
@@ -65,121 +79,414 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 .wp-block-button__link:focus-visible {
-  outline: 3px solid var(--kameari-gold);
+  outline: 3px solid var(--kameari-olive-soft);
   outline-offset: 3px;
 }
 
-.site-main {
-  background: var(--kameari-ivory);
-}
-
+.wp-site-blocks,
+.site-main,
 .content-bg,
 .entry-content-wrap,
-.wp-site-blocks,
-.site-container {
+.site-container,
+body.content-style-unboxed .site {
   background-color: transparent;
 }
 
-.entry-content > .alignfull {
+.entry-content > .alignfull,
+.alignfull {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
+  max-width: 100vw;
   width: 100vw;
 }
 
+/* On any page whose pattern already provides the hero, hide Kadence's
+   default page title hero block and remove the surrounding content padding
+   so our sections sit edge-to-edge. */
+body.home .entry-hero,
+body.home .entry-hero-container,
+body.home .entry-header-wrap,
+body.home .entry-meta,
+body.kameari-has-custom-hero .entry-hero,
+body.kameari-has-custom-hero .entry-hero-container,
+body.kameari-has-custom-hero .entry-header-wrap,
+body.kameari-has-custom-hero .entry-meta {
+  display: none !important;
+}
+
+body.home .content-area,
+body.home .entry-content-wrap,
+body.home .site-main,
+body.kameari-has-custom-hero .content-area,
+body.kameari-has-custom-hero .entry-content-wrap,
+body.kameari-has-custom-hero .site-main {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.home .entry.single-entry,
+body.home .entry,
+body.kameari-has-custom-hero .entry.single-entry,
+body.kameari-has-custom-hero .entry {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+body.home .entry-content,
+body.kameari-has-custom-hero .entry-content {
+  margin: 0 !important;
+}
+
+/* ============================================================
+   Site header (Kadence override)
+   ============================================================ */
+
+.site-header,
+.site-header-row-layout-contained,
+.site-header-row-layout-fullwidth-contained,
+.site-header-main-section-left,
+.site-header-main-section-center,
+.site-header-main-section-right {
+  background: var(--kameari-white);
+}
+
+.site-header-wrap {
+  border-bottom: 1px solid var(--kameari-border);
+}
+
+.site-branding .site-title,
+.site-branding a.site-title {
+  color: var(--kameari-navy) !important;
+  font-family: var(--kameari-serif);
+  font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.header-navigation .menu > li > a,
+#main-navigation .menu > li > a,
+.kadence-menu-mega-enabled > li > a {
+  color: var(--kameari-navy) !important;
+  font-family: var(--kameari-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.header-navigation .menu > li > a:hover,
+#main-navigation .menu > li > a:hover {
+  color: var(--kameari-olive) !important;
+}
+
+.header-navigation .menu > li.current-menu-item > a,
+.header-navigation .menu > li.current-menu-ancestor > a {
+  color: var(--kameari-olive) !important;
+}
+
+/* ============================================================
+   Section system
+   ============================================================ */
+
 .kameari-section {
-  padding: clamp(3rem, 7vw, 6.5rem) 0;
+  padding: clamp(4rem, 9vw, 7.5rem) 0;
+  position: relative;
+}
+
+.kameari-section--cream {
+  background: var(--kameari-sand);
+  color: var(--kameari-text);
 }
 
 .kameari-section--white {
-  background: var(--kameari-warm-white);
+  background: var(--kameari-white);
 }
 
-.kameari-section--green {
-  background: var(--kameari-green);
-  color: var(--kameari-warm-white);
+.kameari-section--navy {
+  background: var(--kameari-navy);
+  color: rgba(255, 255, 255, 0.86);
 }
 
-.kameari-section--green h2,
-.kameari-section--green h3,
-.kameari-section--green a {
-  color: var(--kameari-warm-white);
+.kameari-section--navy h1,
+.kameari-section--navy h2,
+.kameari-section--navy h3,
+.kameari-section--navy h4 {
+  color: var(--kameari-olive-soft);
 }
 
-.kameari-section--green .kameari-card h3 {
+.kameari-section--navy .kameari-card h3,
+.kameari-section--navy .kameari-card h4 {
   color: var(--kameari-navy);
 }
 
-.kameari-section--green .kameari-card a {
-  color: var(--kameari-green);
+.kameari-section--navy a:not(.kameari-button):not(.wp-block-button__link):not(.kameari-imagecard) {
+  color: var(--kameari-olive-soft);
+}
+
+.kameari-section--navy a:not(.kameari-button):not(.wp-block-button__link):not(.kameari-imagecard):hover {
+  color: #fff;
+}
+
+.kameari-section--navy .kameari-button,
+.kameari-section--navy a.kameari-button,
+.kameari-section--navy .wp-block-button__link {
+  background: var(--kameari-olive);
+  border-color: var(--kameari-olive);
+  color: var(--kameari-white) !important;
+}
+
+.kameari-section--navy .kameari-button:hover,
+.kameari-section--navy a.kameari-button:hover,
+.kameari-section--navy .wp-block-button__link:hover {
+  background: var(--kameari-olive-soft);
+  border-color: var(--kameari-olive-soft);
+  color: var(--kameari-navy) !important;
+}
+
+.kameari-section + .kameari-section {
+  border-top: none;
+}
+
+/* Subtle wave divider on cream section bottom */
+.kameari-section--cream::after {
+  background: var(--kameari-ivory);
+  bottom: -1px;
+  content: "";
+  display: block;
+  height: 60px;
+  -webkit-mask: radial-gradient(70px 60px at 50% 0%, transparent 99%, #000 100%) 50% 0/140px 60px repeat-x;
+  mask: radial-gradient(70px 60px at 50% 0%, transparent 99%, #000 100%) 50% 0/140px 60px repeat-x;
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
 }
 
 .kameari-inner {
   margin-inline: auto;
-  max-width: 1180px;
-  padding-inline: clamp(1.125rem, 4vw, 2.5rem);
+  max-width: var(--kameari-content-width);
+  padding-inline: clamp(1.25rem, 4vw, 2.75rem);
+  position: relative;
 }
 
-.kameari-eyebrow {
-  color: var(--kameari-green);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.75rem;
+.kameari-inner--narrow {
+  max-width: var(--kameari-narrow-width);
+}
+
+.kameari-eyebrow,
+p.kameari-eyebrow {
+  color: var(--kameari-text-soft);
+  font-family: var(--kameari-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  margin: 0 0 1rem;
   text-transform: uppercase;
 }
 
-.kameari-section--green .kameari-eyebrow {
-  color: var(--kameari-beige);
+.kameari-section--navy .kameari-eyebrow,
+.kameari-section--navy p.kameari-eyebrow {
+  color: var(--kameari-olive-soft);
 }
 
-.kameari-lead {
-  color: rgba(36, 36, 36, 0.82);
-  font-size: clamp(1.05rem, 2vw, 1.22rem);
-  line-height: 1.9;
-  max-width: 760px;
-}
-
-.kameari-hero {
-  background:
-    linear-gradient(90deg, rgba(29, 43, 58, 0.78), rgba(31, 77, 58, 0.48), rgba(29, 43, 58, 0.08)),
-    var(--kameari-hero-image, url("https://catholic-kameari.jp/wp-content/uploads/2022/05/kameari_church_1.jpg"));
-  background-position: center;
-  background-size: cover;
-  color: var(--kameari-warm-white);
-  min-height: min(760px, 88vh);
-  position: relative;
-}
-
-.kameari-hero::after {
-  background: linear-gradient(180deg, rgba(248, 244, 236, 0), var(--kameari-ivory));
-  bottom: 0;
-  content: "";
-  height: 7rem;
-  left: 0;
-  pointer-events: none;
-  position: absolute;
-  right: 0;
-}
-
-.kameari-hero__content {
-  min-height: min(720px, 84vh);
-  padding: clamp(5rem, 12vw, 9rem) 0 clamp(6rem, 14vw, 9rem);
-  position: relative;
-  z-index: 1;
-}
-
-.kameari-hero h1 {
-  color: var(--kameari-warm-white);
-  font-size: clamp(2.65rem, 8vw, 5.6rem);
-  margin-bottom: 1rem;
-  max-width: 920px;
+.kameari-display,
+.kameari-display.wp-block-heading,
+h1.kameari-display,
+h2.kameari-display {
+  color: var(--kameari-navy);
+  font-family: var(--kameari-display);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.15;
+  margin: 0 0 1.25rem;
   text-wrap: balance;
 }
 
-.kameari-hero p {
-  color: rgba(255, 253, 248, 0.94);
-  font-size: clamp(1.12rem, 2.4vw, 1.45rem);
+.kameari-section--navy .kameari-display,
+.kameari-section--navy h1.kameari-display,
+.kameari-section--navy h2.kameari-display {
+  color: var(--kameari-olive-soft);
+}
+
+.kameari-rule {
+  background: var(--kameari-olive);
+  border: none;
+  height: 2px;
+  margin: 1.25rem 0 1.5rem;
+  width: 64px;
+}
+
+.kameari-section--navy .kameari-rule {
+  background: var(--kameari-olive-soft);
+}
+
+.kameari-lead,
+p.kameari-lead {
+  color: var(--kameari-text-soft);
+  font-family: var(--kameari-sans);
+  font-size: clamp(1.02rem, 1.4vw, 1.15rem);
+  line-height: 1.85;
+  margin: 0 auto 1.5rem;
   max-width: 720px;
+}
+
+.kameari-section--navy .kameari-lead,
+.kameari-section--navy p.kameari-lead {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+
+.kameari-hero {
+  background: var(--kameari-navy-dark);
+  color: var(--kameari-white);
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.kameari-hero::before {
+  background-image:
+    linear-gradient(180deg, rgba(13, 24, 40, 0.55) 0%, rgba(13, 24, 40, 0.35) 45%, rgba(13, 24, 40, 0.78) 100%),
+    var(--kameari-hero-image, url("/wp-content/uploads/2022/05/kameari_church_1.jpg"));
+  background-position: center;
+  background-size: cover;
+  content: "";
+  inset: 0;
+  position: absolute;
+  z-index: 0;
+}
+
+.kameari-hero__content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: clamp(540px, 78vh, 760px);
+  padding: clamp(5rem, 12vw, 9rem) clamp(1.25rem, 5vw, 3rem);
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.kameari-hero h1,
+.kameari-hero .kameari-display {
+  color: var(--kameari-white);
+  font-family: var(--kameari-display);
+  font-size: clamp(2.8rem, 6.5vw, 5.2rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  max-width: 900px;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.3);
+}
+
+.kameari-hero .kameari-eyebrow {
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  margin-bottom: 1rem;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
+.kameari-hero p:not(.kameari-eyebrow) {
+  color: rgba(255, 255, 255, 0.92);
+  font-family: var(--kameari-sans);
+  font-size: clamp(0.78rem, 1vw, 0.92rem);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  margin: 0 0 2rem;
+  max-width: 720px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
+.kameari-hero hr,
+.kameari-hero .kameari-rule {
+  background: rgba(255, 255, 255, 0.55);
+  height: 1px;
+  margin: 0 auto 1.5rem;
+  width: 80px;
+}
+
+.kameari-hero .kameari-actions,
+.kameari-hero .wp-block-buttons {
+  justify-content: center;
+}
+
+/* Curved bottom on hero */
+.kameari-hero::after {
+  background: var(--kameari-sand);
+  bottom: -1px;
+  content: "";
+  height: 70px;
+  left: 0;
+  -webkit-mask: radial-gradient(50% 70px at 50% 100%, #000 99%, transparent 100%) 50% 100%/100% 70px no-repeat;
+  mask: radial-gradient(50% 70px at 50% 100%, #000 99%, transparent 100%) 50% 100%/100% 70px no-repeat;
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+
+.wp-block-button__link,
+.kameari-button {
+  background: var(--kameari-olive);
+  border: 2px solid var(--kameari-olive);
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--kameari-white);
+  display: inline-flex;
+  font-family: var(--kameari-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  justify-content: center;
+  letter-spacing: 0.22em;
+  min-height: 52px;
+  padding: 1rem 2.25rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.wp-block-button__link:hover,
+.kameari-button:hover {
+  background: var(--kameari-olive-dark);
+  border-color: var(--kameari-olive-dark);
+  color: var(--kameari-white);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link,
+.kameari-button--secondary {
+  background: transparent;
+  border: 2px solid var(--kameari-olive);
+  color: var(--kameari-olive);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover,
+.kameari-button--secondary:hover {
+  background: var(--kameari-olive);
+  color: var(--kameari-white);
+}
+
+.kameari-section--navy .wp-block-button.is-style-outline .wp-block-button__link {
+  border-color: var(--kameari-olive-soft);
+  color: var(--kameari-olive-soft);
+}
+
+.kameari-section--navy .wp-block-button.is-style-outline .wp-block-button__link:hover {
+  background: var(--kameari-olive-soft);
+  color: var(--kameari-navy);
 }
 
 .kameari-actions,
@@ -187,65 +494,499 @@ select:focus-visible,
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.85rem;
+  gap: 1rem;
+  justify-content: center;
   margin-top: 2rem;
 }
 
-.wp-block-button__link,
-.kameari-button {
-  border-radius: 999px;
+/* ============================================================
+   Mass Times block (3-column with shield watermark)
+   ============================================================ */
+
+.kameari-masstimes {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: minmax(220px, 1fr) minmax(200px, 1fr) minmax(220px, 1fr);
+  position: relative;
+}
+
+.kameari-masstimes::before {
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 130' fill='none' stroke='%23142036' stroke-opacity='0.08' stroke-width='1.2'><path d='M50 10 L85 25 L85 70 Q85 105 50 122 Q15 105 15 70 L15 25 Z'/><path d='M50 30 v60 M30 60 h40'/></svg>") no-repeat center / contain;
+  content: "";
+  height: 320px;
+  left: -60px;
+  opacity: 0.6;
+  position: absolute;
+  top: -20px;
+  width: 240px;
+  z-index: 0;
+}
+
+.kameari-masstimes > * {
+  position: relative;
+  z-index: 1;
+}
+
+.kameari-masstimes__intro h2,
+.kameari-masstimes__intro .kameari-display {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-top: 0.25rem;
+}
+
+.kameari-mass-col h3 {
+  color: var(--kameari-olive-dark);
+  font-family: var(--kameari-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.kameari-mass-col p {
+  margin: 0 0 0.4rem;
+}
+
+.kameari-mass-col p strong {
+  color: var(--kameari-olive-dark);
   font-weight: 700;
-  min-height: 48px;
-  padding: 0.75rem 1.2rem;
 }
 
-.wp-block-button:not(.is-style-outline) .wp-block-button__link,
-.kameari-button--primary {
-  background: var(--kameari-green);
-  color: var(--kameari-warm-white);
+.kameari-arrow-link {
+  color: var(--kameari-text);
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  gap: 0.5rem;
+  letter-spacing: 0.22em;
+  margin-top: 0.75rem;
+  text-transform: uppercase;
+  transition: color 0.18s ease, gap 0.18s ease;
 }
 
-.wp-block-button:not(.is-style-outline) .wp-block-button__link:hover,
-.kameari-button--primary:hover {
-  background: var(--kameari-navy);
-  color: var(--kameari-warm-white);
+.kameari-arrow-link::after {
+  content: "→";
+  font-size: 1rem;
+  letter-spacing: 0;
 }
 
-.wp-block-button.is-style-outline .wp-block-button__link,
-.kameari-button--secondary {
-  background: rgba(255, 253, 248, 0.92);
-  border: 1px solid rgba(255, 253, 248, 0.72);
+.kameari-arrow-link:hover {
+  color: var(--kameari-olive);
+  gap: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .kameari-masstimes {
+    grid-template-columns: 1fr;
+  }
+  .kameari-masstimes::before {
+    display: none;
+  }
+}
+
+/* ============================================================
+   Image card grid (Worship Here / Serve Here)
+   ============================================================ */
+
+.kameari-imagecards {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+.kameari-imagecard {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.kameari-imagecard:hover {
+  transform: translateY(-4px);
+}
+
+.kameari-imagecard__image {
+  aspect-ratio: 3/4;
+  background: var(--kameari-sand-soft);
+  background-position: center;
+  background-size: cover;
+  border-radius: var(--kameari-radius-sm);
+  box-shadow: var(--kameari-shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+.kameari-imagecard__image img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.kameari-imagecard__title {
   color: var(--kameari-navy);
+  font-family: var(--kameari-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0;
 }
+
+.kameari-section--navy .kameari-imagecard__title {
+  color: var(--kameari-white);
+}
+
+.kameari-imagecard__meta {
+  color: var(--kameari-text-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  margin: 0.4rem 0 0;
+  text-transform: uppercase;
+}
+
+.kameari-section--navy .kameari-imagecard__meta {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================================
+   Worship Here split layout
+   ============================================================ */
+
+.kameari-split {
+  align-items: start;
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+
+.kameari-split--reverse {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+
+.kameari-split__intro h2,
+.kameari-split__intro .kameari-display {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-top: 0;
+}
+
+@media (max-width: 880px) {
+  .kameari-split,
+  .kameari-split--reverse {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Generic card grid (used by activities/give section)
+   ============================================================ */
 
 .kameari-card-grid {
   display: grid;
-  gap: 1rem;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
 }
 
 .kameari-card,
 .wp-block-group.kameari-card {
-  background: var(--kameari-warm-white);
+  background: var(--kameari-white);
   border: 1px solid var(--kameari-border);
-  border-radius: 8px;
-  box-shadow: 0 10px 28px rgba(29, 43, 58, 0.07);
+  border-radius: var(--kameari-radius-sm);
+  box-shadow: var(--kameari-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   min-height: 100%;
-  padding: clamp(1.25rem, 3vw, 1.75rem);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.kameari-card h3 {
-  font-size: clamp(1.16rem, 2vw, 1.45rem);
-  margin-top: 0;
+.kameari-card:hover {
+  box-shadow: var(--kameari-shadow-strong);
+  transform: translateY(-4px);
+}
+
+.kameari-card h3,
+.kameari-card h4 {
+  color: var(--kameari-navy);
+  font-family: var(--kameari-display);
+  font-size: 1.35rem;
+  margin: 0;
 }
 
 .kameari-card p {
-  margin-bottom: 0;
+  color: var(--kameari-text-soft);
+  margin: 0;
 }
 
 .kameari-card--gold {
-  border-top: 4px solid var(--kameari-gold);
+  border-top: 3px solid var(--kameari-olive);
 }
+
+/* ============================================================
+   News / post listing
+   ============================================================ */
+
+.kameari-post-list {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+}
+
+.kameari-post-list__item {
+  background: var(--kameari-white);
+  border: 1px solid var(--kameari-border);
+  border-radius: var(--kameari-radius-sm);
+  box-shadow: var(--kameari-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.kameari-post-list__item:hover {
+  box-shadow: var(--kameari-shadow-strong);
+  transform: translateY(-4px);
+}
+
+.kameari-post-list__thumb {
+  aspect-ratio: 16/9;
+  background: var(--kameari-sand-soft);
+  background-position: center;
+  background-size: cover;
+  display: block;
+}
+
+.kameari-post-list__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.6rem;
+  padding: 1.5rem 1.5rem 1.75rem;
+}
+
+.kameari-post-list__item time {
+  color: var(--kameari-olive-dark);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.kameari-post-list__item h2,
+.kameari-post-list__item h3 {
+  color: var(--kameari-navy);
+  font-family: var(--kameari-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.kameari-post-list__item h2 a,
+.kameari-post-list__item h3 a {
+  color: inherit;
+}
+
+.kameari-post-list__item h2 a:hover,
+.kameari-post-list__item h3 a:hover {
+  color: var(--kameari-olive);
+}
+
+.kameari-post-list__item p {
+  color: var(--kameari-text-soft);
+  font-size: 0.96rem;
+  margin: 0;
+}
+
+.kameari-news-list .wp-block-post {
+  background: var(--kameari-white);
+  border: 1px solid var(--kameari-border);
+  border-radius: var(--kameari-radius-sm);
+  box-shadow: var(--kameari-shadow);
+  padding: 1.5rem;
+}
+
+.kameari-news-list .wp-block-post-title {
+  font-family: var(--kameari-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.kameari-news-list .wp-block-post-date,
+.kameari-news-list time {
+  color: var(--kameari-olive-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Single post / page styling
+   ============================================================ */
+
+/* Single-post hero. Kadence renders both a "thumbnail behind title" block
+   with the featured image as background AND its own .entry-header inside the
+   article — we hide both and use our own clean cream header injected by the
+   the_content filter (.kameari-post-hero). */
+body.single-post .post-thumbnail.kadence-thumbnail-position-behind,
+body.single-post .article-post-thumbnail.kadence-thumbnail-position-behind,
+body.single-post article.single-entry > .entry-content-wrap > .entry-header,
+body.single-post article.single-entry > header.entry-header {
+  display: none !important;
+}
+
+.kameari-post-hero {
+  background: var(--kameari-sand);
+  margin: 0 calc(50% - 50vw) 3rem;
+  padding: clamp(3rem, 8vw, 5.5rem) clamp(1.25rem, 5vw, 3rem);
+  text-align: center;
+  width: 100vw;
+}
+
+.kameari-post-hero__inner {
+  margin: 0 auto;
+  max-width: var(--kameari-narrow-width);
+}
+
+.kameari-post-hero .kameari-eyebrow {
+  color: var(--kameari-olive-dark);
+  font-weight: 600;
+}
+
+.kameari-post-hero h1 {
+  color: var(--kameari-navy);
+  font-family: var(--kameari-display);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+
+.kameari-post-hero__meta {
+  color: var(--kameari-text-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.entry-content,
+.entry-content p,
+.entry-content li {
+  font-family: var(--kameari-sans);
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.entry-content h2 {
+  font-family: var(--kameari-display);
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  margin-top: 2.5rem;
+}
+
+.entry-content h3 {
+  font-family: var(--kameari-display);
+  font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+  margin-top: 2rem;
+}
+
+.entry-content blockquote {
+  border-left: 3px solid var(--kameari-olive);
+  color: var(--kameari-text);
+  font-family: var(--kameari-display);
+  font-size: 1.25rem;
+  font-style: italic;
+  margin: 2rem 0;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+}
+
+.entry-content img {
+  border-radius: var(--kameari-radius-sm);
+}
+
+/* ============================================================
+   Map block
+   ============================================================ */
+
+.kameari-map,
+iframe.kameari-map {
+  border: 0;
+  border-radius: var(--kameari-radius-sm);
+  box-shadow: var(--kameari-shadow);
+  display: block;
+  height: 420px;
+  min-height: 360px;
+  width: 100%;
+}
+
+/* ============================================================
+   Floating "Mass times" CTA
+   ============================================================ */
+
+.kameari-floating-cta {
+  align-items: center;
+  background: var(--kameari-navy);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  bottom: 24px;
+  box-shadow: 0 18px 40px rgba(20, 32, 54, 0.35);
+  color: var(--kameari-white);
+  display: inline-flex;
+  font-family: var(--kameari-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  gap: 0.55rem;
+  letter-spacing: 0.18em;
+  padding: 0.85rem 1.5rem;
+  position: fixed;
+  right: 24px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.2s ease, transform 0.2s ease;
+  z-index: 50;
+}
+
+.kameari-floating-cta:hover {
+  background: var(--kameari-olive);
+  color: var(--kameari-white);
+  transform: translateY(-2px);
+}
+
+.kameari-floating-cta__icon {
+  background: var(--kameari-olive);
+  border-radius: 50%;
+  display: inline-grid;
+  height: 24px;
+  place-items: center;
+  width: 24px;
+}
+
+.kameari-floating-cta__icon::before {
+  background: var(--kameari-white);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'><path d='M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3'/><circle cx='12' cy='12' r='4'/></svg>") no-repeat center / 14px 14px;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'><path d='M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3'/><circle cx='12' cy='12' r='4'/></svg>") no-repeat center / 14px 14px;
+  content: "";
+  height: 14px;
+  width: 14px;
+}
+
+@media (max-width: 600px) {
+  .kameari-floating-cta {
+    bottom: 12px;
+    font-size: 0.72rem;
+    padding: 0.75rem 1.1rem;
+    right: 12px;
+  }
+}
+
+/* ============================================================
+   Schedule list (ミサ pages)
+   ============================================================ */
 
 .kameari-schedule-list {
   display: grid;
@@ -256,87 +997,123 @@ select:focus-visible,
   align-items: baseline;
   border-bottom: 1px solid var(--kameari-border);
   display: grid;
-  gap: 0.5rem;
+  gap: 0.75rem;
   grid-template-columns: minmax(8rem, 0.9fr) 1.4fr;
-  padding: 0.7rem 0;
+  padding: 0.85rem 0;
 }
 
 .kameari-schedule-item strong {
-  color: var(--kameari-navy);
-}
-
-.kameari-news-list .wp-block-post {
-  background: var(--kameari-warm-white);
-  border: 1px solid var(--kameari-border);
-  border-radius: 8px;
-  box-shadow: 0 10px 28px rgba(29, 43, 58, 0.07);
-  padding: 1.25rem;
-}
-
-.kameari-news-list .wp-block-post-title {
-  font-size: 1.2rem;
-  line-height: 1.55;
-}
-
-.kameari-post-list {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-}
-
-.kameari-post-list__item {
-  background: var(--kameari-warm-white);
-  border: 1px solid var(--kameari-border);
-  border-radius: 8px;
-  box-shadow: 0 10px 28px rgba(29, 43, 58, 0.07);
-  padding: 1.25rem;
-}
-
-.kameari-post-list__item time {
-  color: rgba(36, 36, 36, 0.68);
-  display: block;
-  font-size: 0.9rem;
-  margin-bottom: 0.45rem;
-}
-
-.kameari-post-list__item h2 {
-  font-size: 1.2rem;
-  margin: 0 0 0.5rem;
-}
-
-.kameari-post-list__item p {
-  margin-bottom: 0;
-}
-
-.kameari-map {
-  border: 0;
-  border-radius: 8px;
-  box-shadow: var(--kameari-shadow);
-  min-height: 360px;
-  width: 100%;
-}
-
-.site-footer {
-  background: var(--kameari-navy);
-  color: rgba(255, 253, 248, 0.86);
-}
-
-.site-footer a {
-  color: var(--kameari-warm-white);
+  color: var(--kameari-olive-dark);
+  font-family: var(--kameari-display);
+  font-weight: 600;
 }
 
 @media (max-width: 767px) {
-  body {
-    font-size: 17px;
-  }
-
-  .kameari-hero,
-  .kameari-hero__content {
-    min-height: 620px;
-  }
-
   .kameari-schedule-item {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Footer (Kadence override)
+   ============================================================ */
+
+.site-footer,
+.site-footer-row-layout-contained,
+.site-footer-row-layout-fullwidth-contained,
+.site-footer-row-container,
+.footer-html {
+  background: var(--kameari-navy-dark);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.site-footer a {
+  color: var(--kameari-white);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--kameari-olive-soft);
+}
+
+/* Hide the default Kadence "WordPress Theme by Kadence WP" credit row;
+   our injected .kameari-footer covers everything we need. */
+.site-footer .site-footer-row-tertiary,
+.site-footer .site-footer-row-tertiary-section-1,
+.site-footer .footer-html {
+  display: none !important;
+}
+
+.kameari-footer {
+  background: var(--kameari-navy-dark);
+  color: rgba(255, 255, 255, 0.78);
+  padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.kameari-footer .kameari-inner {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+  grid-template-columns: 1.3fr 1fr 1fr;
+}
+
+.kameari-footer h4 {
+  color: var(--kameari-olive-soft);
+  font-family: var(--kameari-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  margin: 0 0 1rem;
+}
+
+.kameari-footer p,
+.kameari-footer a,
+.kameari-footer li {
+  color: rgba(255, 255, 255, 0.78);
+  font-family: var(--kameari-sans);
+  font-size: 0.93rem;
+  line-height: 1.85;
+}
+
+.kameari-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kameari-footer__brand {
+  font-family: var(--kameari-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.kameari-footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1rem, 2vw, 1.5rem);
+  text-align: center;
+}
+
+@media (max-width: 880px) {
+  .kameari-footer .kameari-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Mobile tweaks
+   ============================================================ */
+
+@media (max-width: 767px) {
+  body {
+    font-size: 16px;
+  }
+
+  .kameari-hero__content {
+    min-height: 540px;
+    padding: 4rem 1.25rem;
   }
 
   .kameari-actions,
