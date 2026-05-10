@@ -1,10 +1,10 @@
 /*
 Theme Name: Catholic Kameari Kadence Child
 Theme URI: https://catholic-kameari.jp/
-Description: Modern, premium Kadence child theme for Catholic Kameari Church, St. Francis of Assisi, Tokyo. Inspired by stlouiswaco.com.
+Description: Kadence child theme for Catholic Kameari Church, St. Francis of Assisi, Tokyo. Ivory ground, deep evergreen, muted gold accents with Shippori Mincho B1 + Cormorant Garamond typography.
 Author: Catholic Kameari Church
 Template: kadence
-Version: 0.2.0
+Version: 0.3.0
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.2
@@ -12,85 +12,62 @@ Text Domain: kameari
 */
 
 :root {
-  --kameari-navy: #142036;
-  --kameari-navy-dark: #0d1828;
-  --kameari-navy-soft: #243757;
-  --kameari-olive: #8a7e2d;
-  --kameari-olive-dark: #6e6422;
-  --kameari-olive-soft: #b3a44a;
-  --kameari-sand: #ece4d0;
-  --kameari-sand-soft: #f5efe0;
-  --kameari-cream: #faf6ec;
-  --kameari-ivory: #fbfaf6;
-  --kameari-white: #ffffff;
-  --kameari-text: #2a2f3a;
-  --kameari-text-soft: #576278;
-  --kameari-border: rgba(20, 32, 54, 0.12);
-  --kameari-shadow: 0 24px 48px rgba(20, 32, 54, 0.10);
-  --kameari-shadow-strong: 0 30px 70px rgba(20, 32, 54, 0.18);
-  --kameari-display: "Cormorant Garamond", "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
-  --kameari-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", Georgia, serif;
-  --kameari-sans: "Inter", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", Meiryo, system-ui, sans-serif;
-  --kameari-radius-sm: 4px;
-  --kameari-radius: 10px;
-  --kameari-radius-lg: 22px;
-  --kameari-content-width: 1240px;
-  --kameari-narrow-width: 880px;
+  --bg:        #f3ecdd;
+  --paper:     #faf5e8;
+  --paper-2:   #f7f0df;
+  --line:      #e2d6bd;
+  --line-soft: #ece2cb;
+
+  --ink:       #1a1a17;
+  --ink-2:     #3a3833;
+  --ink-3:     #6e6a60;
+  --ink-4:     #a09a8b;
+
+  --accent:    #2b3d2f;
+  --accent-2:  #3a5240;
+  --gold:      #a3823a;
+  --gold-soft: #c8a85c;
+  --rose:      #8a3a3a;
+
+  --serif-jp:  "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  --serif-en:  "Cormorant Garamond", "Shippori Mincho B1", Georgia, serif;
+  --sans-jp:   "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --sans-en:   "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:      "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius:    2px;
+  --radius-2:  10px;
+  --shadow-sm: 0 1px 0 rgba(40,30,15,.04), 0 2px 6px rgba(40,30,15,.04);
+  --shadow-md: 0 1px 2px rgba(40,30,15,.05), 0 8px 24px rgba(40,30,15,.06);
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+html { scroll-behavior: smooth; }
 body {
-  background: var(--kameari-ivory);
-  color: var(--kameari-text);
-  font-family: var(--kameari-sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans-jp);
   font-size: 17px;
-  line-height: 1.75;
-  letter-spacing: 0.01em;
+  line-height: 1.85;
+  letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "palt" 1;
 }
 
-h1, h2, h3, h4, h5, h6,
-.site-title,
-.entry-title {
-  color: var(--kameari-navy);
-  font-family: var(--kameari-serif);
-  font-weight: 600;
-  letter-spacing: 0.005em;
-  line-height: 1.3;
-}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--accent); color: var(--paper); }
 
-a {
-  color: var(--kameari-olive);
-  text-decoration: none;
-  transition: color 0.18s ease;
-}
-
-a:hover {
-  color: var(--kameari-olive-dark);
-}
-
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-.wp-block-button__link:focus-visible {
-  outline: 3px solid var(--kameari-olive-soft);
-  outline-offset: 3px;
-}
+/* ============================================================
+   Kadence overrides — let our full-bleed patterns own the page
+   ============================================================ */
 
 .wp-site-blocks,
 .site-main,
 .content-bg,
 .entry-content-wrap,
 .site-container,
-body.content-style-unboxed .site {
-  background-color: transparent;
-}
+body.content-style-unboxed .site { background-color: transparent; }
 
 .entry-content > .alignfull,
 .alignfull {
@@ -100,9 +77,6 @@ body.content-style-unboxed .site {
   width: 100vw;
 }
 
-/* On any page whose pattern already provides the hero, hide Kadence's
-   default page title hero block and remove the surrounding content padding
-   so our sections sit edge-to-edge. */
 body.home .entry-hero,
 body.home .entry-hero-container,
 body.home .entry-header-wrap,
@@ -110,19 +84,14 @@ body.home .entry-meta,
 body.kameari-has-custom-hero .entry-hero,
 body.kameari-has-custom-hero .entry-hero-container,
 body.kameari-has-custom-hero .entry-header-wrap,
-body.kameari-has-custom-hero .entry-meta {
-  display: none !important;
-}
+body.kameari-has-custom-hero .entry-meta { display: none !important; }
 
 body.home .content-area,
 body.home .entry-content-wrap,
 body.home .site-main,
 body.kameari-has-custom-hero .content-area,
 body.kameari-has-custom-hero .entry-content-wrap,
-body.kameari-has-custom-hero .site-main {
-  margin: 0 !important;
-  padding: 0 !important;
-}
+body.kameari-has-custom-hero .site-main { margin: 0 !important; padding: 0 !important; }
 
 body.home .entry.single-entry,
 body.home .entry,
@@ -134,12 +103,10 @@ body.kameari-has-custom-hero .entry {
 }
 
 body.home .entry-content,
-body.kameari-has-custom-hero .entry-content {
-  margin: 0 !important;
-}
+body.kameari-has-custom-hero .entry-content { margin: 0 !important; }
 
 /* ============================================================
-   Site header (Kadence override)
+   Header (Kadence override)
    ============================================================ */
 
 .site-header,
@@ -147,875 +114,787 @@ body.kameari-has-custom-hero .entry-content {
 .site-header-row-layout-fullwidth-contained,
 .site-header-main-section-left,
 .site-header-main-section-center,
-.site-header-main-section-right {
-  background: var(--kameari-white);
-}
+.site-header-main-section-right { background: var(--bg); }
 
-.site-header-wrap {
-  border-bottom: 1px solid var(--kameari-border);
-}
+.site-header-wrap { border-bottom: 1px solid var(--line-soft); }
 
 .site-branding .site-title,
 .site-branding a.site-title {
-  color: var(--kameari-navy) !important;
-  font-family: var(--kameari-serif);
-  font-size: clamp(1.05rem, 1.6vw, 1.4rem);
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  color: var(--ink) !important;
+  font-family: var(--serif-jp);
+  font-weight: 500;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  letter-spacing: .12em;
   text-transform: none;
+}
+
+.site-branding .site-description {
+  color: var(--ink-3);
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: .85rem;
+  letter-spacing: .14em;
+  margin-top: 2px;
+}
+
+/* Inject the parish mark next to the site title */
+.site-branding {
+  align-items: center;
+}
+.site-branding::before {
+  content: "";
+  display: inline-block;
+  width: 44px;
+  height: 44px;
+  margin-right: 14px;
+  background: url("assets/logo.svg") no-repeat center / contain;
+  flex-shrink: 0;
 }
 
 .header-navigation .menu > li > a,
 #main-navigation .menu > li > a,
 .kadence-menu-mega-enabled > li > a {
-  color: var(--kameari-navy) !important;
-  font-family: var(--kameari-sans);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  transition: color 0.2s ease;
+  color: var(--ink-2) !important;
+  font-family: var(--serif-jp);
+  font-size: .82rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: none;
+  padding: 10px 14px;
+  position: relative;
+  transition: color .15s;
 }
 
 .header-navigation .menu > li > a:hover,
-#main-navigation .menu > li > a:hover {
-  color: var(--kameari-olive) !important;
-}
+#main-navigation .menu > li > a:hover { color: var(--accent) !important; }
 
 .header-navigation .menu > li.current-menu-item > a,
 .header-navigation .menu > li.current-menu-ancestor > a {
-  color: var(--kameari-olive) !important;
+  color: var(--accent) !important;
 }
 
 /* ============================================================
-   Section system
+   Announcement topbar (above Kadence header, injected by PHP)
    ============================================================ */
 
-.kameari-section {
-  padding: clamp(4rem, 9vw, 7.5rem) 0;
-  position: relative;
+.kameari-topbar {
+  background: var(--accent);
+  color: var(--paper);
+  font-family: var(--sans-jp);
+  font-size: 13px;
+  letter-spacing: .04em;
+}
+.kameari-topbar__inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 8px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.kameari-topbar__mass { display: inline-flex; gap: 14px; align-items: center; }
+.kameari-topbar__mass .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-soft); display:inline-block; }
+.kameari-topbar__right { display: inline-flex; gap: 16px; align-items: center; }
+.kameari-topbar a { color: var(--paper); opacity: .85; }
+.kameari-topbar a:hover { opacity: 1; }
+@media (max-width: 720px) {
+  .kameari-topbar__inner { font-size: 12px; padding: 7px 20px; }
+  .kameari-topbar__right { display: none; }
 }
 
-.kameari-section--cream {
-  background: var(--kameari-sand);
-  color: var(--kameari-text);
-}
-
-.kameari-section--white {
-  background: var(--kameari-white);
-}
-
-.kameari-section--navy {
-  background: var(--kameari-navy);
-  color: rgba(255, 255, 255, 0.86);
-}
-
-.kameari-section--navy h1,
-.kameari-section--navy h2,
-.kameari-section--navy h3,
-.kameari-section--navy h4 {
-  color: var(--kameari-olive-soft);
-}
-
-.kameari-section--navy .kameari-card h3,
-.kameari-section--navy .kameari-card h4 {
-  color: var(--kameari-navy);
-}
-
-.kameari-section--navy a:not(.kameari-button):not(.wp-block-button__link):not(.kameari-imagecard) {
-  color: var(--kameari-olive-soft);
-}
-
-.kameari-section--navy a:not(.kameari-button):not(.wp-block-button__link):not(.kameari-imagecard):hover {
-  color: #fff;
-}
-
-.kameari-section--navy .kameari-button,
-.kameari-section--navy a.kameari-button,
-.kameari-section--navy .wp-block-button__link {
-  background: var(--kameari-olive);
-  border-color: var(--kameari-olive);
-  color: var(--kameari-white) !important;
-}
-
-.kameari-section--navy .kameari-button:hover,
-.kameari-section--navy a.kameari-button:hover,
-.kameari-section--navy .wp-block-button__link:hover {
-  background: var(--kameari-olive-soft);
-  border-color: var(--kameari-olive-soft);
-  color: var(--kameari-navy) !important;
-}
-
-.kameari-section + .kameari-section {
-  border-top: none;
-}
-
-/* Subtle wave divider on cream section bottom */
-.kameari-section--cream::after {
-  background: var(--kameari-ivory);
-  bottom: -1px;
-  content: "";
-  display: block;
-  height: 60px;
-  -webkit-mask: radial-gradient(70px 60px at 50% 0%, transparent 99%, #000 100%) 50% 0/140px 60px repeat-x;
-  mask: radial-gradient(70px 60px at 50% 0%, transparent 99%, #000 100%) 50% 0/140px 60px repeat-x;
-  position: absolute;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-}
+/* ============================================================
+   Container + section system
+   ============================================================ */
 
 .kameari-inner {
-  margin-inline: auto;
-  max-width: var(--kameari-content-width);
-  padding-inline: clamp(1.25rem, 4vw, 2.75rem);
-  position: relative;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px;
 }
+@media (max-width: 720px) { .kameari-inner { padding: 0 20px; } }
 
-.kameari-inner--narrow {
-  max-width: var(--kameari-narrow-width);
-}
-
-.kameari-eyebrow,
-p.kameari-eyebrow {
-  color: var(--kameari-text-soft);
-  font-family: var(--kameari-sans);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  margin: 0 0 1rem;
-  text-transform: uppercase;
-}
-
-.kameari-section--navy .kameari-eyebrow,
-.kameari-section--navy p.kameari-eyebrow {
-  color: var(--kameari-olive-soft);
-}
-
-.kameari-display,
-.kameari-display.wp-block-heading,
-h1.kameari-display,
-h2.kameari-display {
-  color: var(--kameari-navy);
-  font-family: var(--kameari-display);
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
-  font-weight: 500;
-  letter-spacing: -0.005em;
-  line-height: 1.15;
-  margin: 0 0 1.25rem;
-  text-wrap: balance;
-}
-
-.kameari-section--navy .kameari-display,
-.kameari-section--navy h1.kameari-display,
-.kameari-section--navy h2.kameari-display {
-  color: var(--kameari-olive-soft);
-}
-
-.kameari-rule {
-  background: var(--kameari-olive);
-  border: none;
-  height: 2px;
-  margin: 1.25rem 0 1.5rem;
-  width: 64px;
-}
-
-.kameari-section--navy .kameari-rule {
-  background: var(--kameari-olive-soft);
-}
-
-.kameari-lead,
-p.kameari-lead {
-  color: var(--kameari-text-soft);
-  font-family: var(--kameari-sans);
-  font-size: clamp(1.02rem, 1.4vw, 1.15rem);
-  line-height: 1.85;
-  margin: 0 auto 1.5rem;
-  max-width: 720px;
-}
-
-.kameari-section--navy .kameari-lead,
-.kameari-section--navy p.kameari-lead {
-  color: rgba(255, 255, 255, 0.86);
-}
+.kameari-section { padding: 96px 0; }
+.kameari-section--tight { padding: 64px 0; }
+.kameari-section--paper { background: var(--paper); }
+@media (max-width: 720px) { .kameari-section { padding: 64px 0; } }
 
 /* ============================================================
-   Hero
+   Typography utilities
    ============================================================ */
 
-.kameari-hero {
-  background: var(--kameari-navy-dark);
-  color: var(--kameari-white);
+.kameari-eyebrow {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
   margin: 0;
-  position: relative;
-  overflow: hidden;
 }
-
-.kameari-hero::before {
-  background-image:
-    linear-gradient(180deg, rgba(13, 24, 40, 0.55) 0%, rgba(13, 24, 40, 0.35) 45%, rgba(13, 24, 40, 0.78) 100%),
-    var(--kameari-hero-image, url("/wp-content/uploads/2022/05/kameari_church_1.jpg"));
-  background-position: center;
-  background-size: cover;
-  content: "";
-  inset: 0;
-  position: absolute;
-  z-index: 0;
+.kameari-eyebrow .kanji {
+  font-family: var(--serif-jp);
+  letter-spacing: .3em;
+  font-size: 12px;
+  color: var(--gold);
 }
-
-.kameari-hero__content {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: clamp(540px, 78vh, 760px);
-  padding: clamp(5rem, 12vw, 9rem) clamp(1.25rem, 5vw, 3rem);
-  position: relative;
-  text-align: center;
-  z-index: 1;
+.kameari-eyebrow .en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: .12em;
+  color: var(--gold);
 }
-
-.kameari-hero h1,
-.kameari-hero .kameari-display {
-  color: var(--kameari-white);
-  font-family: var(--kameari-display);
-  font-size: clamp(2.8rem, 6.5vw, 5.2rem);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
-  margin: 0 0 1rem;
-  max-width: 900px;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.3);
-}
-
-.kameari-hero .kameari-eyebrow {
-  color: rgba(255, 255, 255, 0.88);
-  font-weight: 600;
-  letter-spacing: 0.4em;
-  margin-bottom: 1rem;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
-}
-
-.kameari-hero p:not(.kameari-eyebrow) {
-  color: rgba(255, 255, 255, 0.92);
-  font-family: var(--kameari-sans);
-  font-size: clamp(0.78rem, 1vw, 0.92rem);
-  font-weight: 600;
-  letter-spacing: 0.32em;
-  margin: 0 0 2rem;
-  max-width: 720px;
-  text-transform: uppercase;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
-}
-
-.kameari-hero hr,
-.kameari-hero .kameari-rule {
-  background: rgba(255, 255, 255, 0.55);
+.kameari-eyebrow .rule {
+  width: 24px;
   height: 1px;
-  margin: 0 auto 1.5rem;
-  width: 80px;
+  background: var(--gold);
+  display: inline-block;
 }
 
-.kameari-hero .kameari-actions,
-.kameari-hero .wp-block-buttons {
-  justify-content: center;
+.kameari-display {
+  font-family: var(--serif-jp);
+  font-weight: 400;
+  letter-spacing: .08em;
+  line-height: 1.45;
+  color: var(--ink);
+  margin: 0;
 }
 
-/* Curved bottom on hero */
-.kameari-hero::after {
-  background: var(--kameari-sand);
-  bottom: -1px;
-  content: "";
-  height: 70px;
-  left: 0;
-  -webkit-mask: radial-gradient(50% 70px at 50% 100%, #000 99%, transparent 100%) 50% 100%/100% 70px no-repeat;
-  mask: radial-gradient(50% 70px at 50% 100%, #000 99%, transparent 100%) 50% 100%/100% 70px no-repeat;
-  position: absolute;
-  right: 0;
-  z-index: 1;
+.kameari-section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 56px;
+  gap: 32px;
+  border-bottom: 1px solid var(--line-soft);
+  padding-bottom: 28px;
+}
+.kameari-section-head__l { max-width: 620px; }
+.kameari-section-head h2 {
+  margin: 6px 0 0;
+  font-family: var(--serif-jp);
+  font-weight: 400;
+  font-size: clamp(28px, 3vw, 38px);
+  letter-spacing: .08em;
+  line-height: 1.4;
+}
+.kameari-section-head .en-tag {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--gold);
+  margin-top: 6px;
+}
+@media (max-width: 720px) {
+  .kameari-section-head { flex-direction: column; align-items: flex-start; margin-bottom: 36px; }
 }
 
 /* ============================================================
    Buttons
    ============================================================ */
 
-.wp-block-button__link,
-.kameari-button {
-  background: var(--kameari-olive);
-  border: 2px solid var(--kameari-olive);
-  border-radius: 0;
-  box-shadow: none;
-  color: var(--kameari-white);
+.kameari-btn,
+.wp-block-button .wp-block-button__link {
   display: inline-flex;
-  font-family: var(--kameari-sans);
-  font-size: 0.78rem;
-  font-weight: 600;
-  justify-content: center;
-  letter-spacing: 0.22em;
-  min-height: 52px;
-  padding: 1rem 2.25rem;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--serif-jp);
+  font-size: 14px;
+  letter-spacing: .14em;
+  padding: 14px 24px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--paper);
+  text-transform: none;
+  transition: all .2s;
+  cursor: pointer;
 }
-
-.wp-block-button__link:hover,
-.kameari-button:hover {
-  background: var(--kameari-olive-dark);
-  border-color: var(--kameari-olive-dark);
-  color: var(--kameari-white);
+.kameari-btn .arr,
+.wp-block-button .wp-block-button__link .arr {
+  font-family: var(--serif-en);
+  font-style: italic;
+  transition: transform .25s;
 }
+.kameari-btn:hover .arr,
+.wp-block-button .wp-block-button__link:hover .arr { transform: translateX(4px); }
+.kameari-btn:hover,
+.wp-block-button .wp-block-button__link:hover { background: var(--accent-2); color: var(--paper); border-color: var(--accent-2); }
 
-.wp-block-button.is-style-outline .wp-block-button__link,
-.kameari-button--secondary {
+.kameari-btn--ghost,
+.wp-block-button.is-style-outline .wp-block-button__link {
   background: transparent;
-  border: 2px solid var(--kameari-olive);
-  color: var(--kameari-olive);
+  color: var(--accent);
+}
+.kameari-btn--ghost:hover,
+.wp-block-button.is-style-outline .wp-block-button__link:hover {
+  background: var(--accent);
+  color: var(--paper);
 }
 
-.wp-block-button.is-style-outline .wp-block-button__link:hover,
-.kameari-button--secondary:hover {
-  background: var(--kameari-olive);
-  color: var(--kameari-white);
-}
-
-.kameari-section--navy .wp-block-button.is-style-outline .wp-block-button__link {
-  border-color: var(--kameari-olive-soft);
-  color: var(--kameari-olive-soft);
-}
-
-.kameari-section--navy .wp-block-button.is-style-outline .wp-block-button__link:hover {
-  background: var(--kameari-olive-soft);
-  color: var(--kameari-navy);
-}
-
-.kameari-actions,
-.wp-block-buttons.kameari-actions {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2rem;
-}
-
-/* ============================================================
-   Mass Times block (3-column with shield watermark)
-   ============================================================ */
-
-.kameari-masstimes {
-  display: grid;
-  gap: clamp(1.5rem, 4vw, 3rem);
-  grid-template-columns: minmax(220px, 1fr) minmax(200px, 1fr) minmax(220px, 1fr);
-  position: relative;
-}
-
-.kameari-masstimes::before {
-  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 130' fill='none' stroke='%23142036' stroke-opacity='0.08' stroke-width='1.2'><path d='M50 10 L85 25 L85 70 Q85 105 50 122 Q15 105 15 70 L15 25 Z'/><path d='M50 30 v60 M30 60 h40'/></svg>") no-repeat center / contain;
-  content: "";
-  height: 320px;
-  left: -60px;
-  opacity: 0.6;
-  position: absolute;
-  top: -20px;
-  width: 240px;
-  z-index: 0;
-}
-
-.kameari-masstimes > * {
-  position: relative;
-  z-index: 1;
-}
-
-.kameari-masstimes__intro h2,
-.kameari-masstimes__intro .kameari-display {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-top: 0.25rem;
-}
-
-.kameari-mass-col h3 {
-  color: var(--kameari-olive-dark);
-  font-family: var(--kameari-display);
-  font-size: 1.45rem;
-  font-weight: 600;
-  margin: 0 0 1rem;
-}
-
-.kameari-mass-col p {
-  margin: 0 0 0.4rem;
-}
-
-.kameari-mass-col p strong {
-  color: var(--kameari-olive-dark);
-  font-weight: 700;
-}
-
-.kameari-arrow-link {
-  color: var(--kameari-text);
+.kameari-btn-link {
   display: inline-flex;
-  align-items: center;
-  font-size: 0.78rem;
-  font-weight: 600;
-  gap: 0.5rem;
-  letter-spacing: 0.22em;
-  margin-top: 0.75rem;
-  text-transform: uppercase;
-  transition: color 0.18s ease, gap 0.18s ease;
+  gap: 8px;
+  align-items: baseline;
+  font-family: var(--serif-jp);
+  font-size: 14px;
+  letter-spacing: .12em;
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 4px;
 }
-
-.kameari-arrow-link::after {
-  content: "→";
-  font-size: 1rem;
-  letter-spacing: 0;
-}
-
-.kameari-arrow-link:hover {
-  color: var(--kameari-olive);
-  gap: 0.85rem;
-}
-
-@media (max-width: 900px) {
-  .kameari-masstimes {
-    grid-template-columns: 1fr;
-  }
-  .kameari-masstimes::before {
-    display: none;
-  }
-}
+.kameari-btn-link .arr { font-family: var(--serif-en); font-style: italic; transition: transform .25s; }
+.kameari-btn-link:hover .arr { transform: translateX(3px); }
 
 /* ============================================================
-   Image card grid (Worship Here / Serve Here)
+   Hero
    ============================================================ */
 
-.kameari-imagecards {
-  display: grid;
-  gap: clamp(1.25rem, 3vw, 2rem);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-}
-
-.kameari-imagecard {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  transition: transform 0.25s ease;
-}
-
-.kameari-imagecard:hover {
-  transform: translateY(-4px);
-}
-
-.kameari-imagecard__image {
-  aspect-ratio: 3/4;
-  background: var(--kameari-sand-soft);
-  background-position: center;
-  background-size: cover;
-  border-radius: var(--kameari-radius-sm);
-  box-shadow: var(--kameari-shadow);
-  overflow: hidden;
+.kameari-hero {
   position: relative;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-soft);
 }
-
-.kameari-imagecard__image img {
-  display: block;
-  height: 100%;
+.kameari-hero__inner {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 0;
+  min-height: 620px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.kameari-hero__text {
+  padding: 96px 64px 96px 0;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.kameari-hero__text .kameari-eyebrow { margin-bottom: 28px; }
+.kameari-hero__text h1 {
+  margin: 0 0 22px;
+  font-family: var(--serif-jp);
+  font-weight: 400;
+  font-size: clamp(34px, 4.4vw, 56px);
+  line-height: 1.45;
+  letter-spacing: .08em;
+  color: var(--ink);
+}
+.kameari-hero__text h1 .accent { color: var(--accent); }
+.kameari-hero__text .sub-en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink-3);
+  margin-bottom: 28px;
+  letter-spacing: .04em;
+}
+.kameari-hero__text p {
+  font-family: var(--sans-jp);
+  font-size: 16px;
+  line-height: 2;
+  color: var(--ink-2);
+  margin: 0 0 36px;
+  max-width: 460px;
+}
+.kameari-hero__actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.kameari-hero__img {
+  position: relative;
+  background: var(--paper-2);
+  border-left: 1px solid var(--line-soft);
+  min-height: 360px;
+}
+.kameari-hero__img img {
+  width: 100%; height: 100%;
+  position: absolute; inset: 0;
   object-fit: cover;
-  width: 100%;
 }
-
-.kameari-imagecard__title {
-  color: var(--kameari-navy);
-  font-family: var(--kameari-display);
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 1.25rem 0 0;
+.kameari-hero__credit {
+  position: absolute; bottom: 24px; right: 24px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .2em; color: var(--ink-3);
+  background: rgba(250,245,232,.85);
+  padding: 6px 10px; border-radius: 2px;
 }
-
-.kameari-section--navy .kameari-imagecard__title {
-  color: var(--kameari-white);
-}
-
-.kameari-imagecard__meta {
-  color: var(--kameari-text-soft);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  margin: 0.4rem 0 0;
-  text-transform: uppercase;
-}
-
-.kameari-section--navy .kameari-imagecard__meta {
-  color: rgba(255, 255, 255, 0.6);
+@media (max-width: 980px) {
+  .kameari-hero__inner { grid-template-columns: 1fr; min-height: auto; padding: 0; }
+  .kameari-hero__text { padding: 56px 20px 48px; order: 2; }
+  .kameari-hero__img { order: 1; aspect-ratio: 4/3; border-left: 0; border-bottom: 1px solid var(--line-soft); }
 }
 
 /* ============================================================
-   Worship Here split layout
+   Mass panel
+   ============================================================ */
+
+.kameari-mass-panel {
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.kameari-mass-panel__l {
+  background: var(--accent);
+  color: var(--paper);
+  padding: 56px 48px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.kameari-mass-panel__l::after {
+  content: ""; position: absolute; right: -60px; bottom: -60px;
+  width: 220px; height: 220px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 50%;
+}
+.kameari-mass-panel__l::before {
+  content: ""; position: absolute; right: -120px; bottom: -120px;
+  width: 360px; height: 360px;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 50%;
+}
+.kameari-mass-panel__l .kameari-eyebrow .kanji,
+.kameari-mass-panel__l .kameari-eyebrow .en,
+.kameari-mass-panel__l .kameari-eyebrow .rule { color: var(--gold-soft); background: var(--gold-soft); }
+.kameari-mass-panel__l .kameari-eyebrow .rule { background: var(--gold-soft); }
+.kameari-mass-panel__l .kameari-eyebrow .kanji,
+.kameari-mass-panel__l .kameari-eyebrow .en { color: var(--gold-soft); background: transparent; }
+
+.kameari-mass-panel__l h3 {
+  font-family: var(--serif-jp);
+  font-weight: 400;
+  font-size: 32px;
+  letter-spacing: .08em;
+  margin: 16px 0 24px;
+  line-height: 1.4;
+  color: var(--paper);
+}
+.kameari-mass-panel__l .sub-en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 17px;
+  opacity: .7;
+}
+.kameari-mass-panel__quote {
+  font-family: var(--serif-jp);
+  font-size: 14px;
+  line-height: 2;
+  letter-spacing: .08em;
+  color: rgba(250,245,232,.8);
+  border-left: 1px solid var(--gold-soft);
+  padding-left: 18px;
+  margin-top: 32px;
+  position: relative; z-index: 2;
+}
+.kameari-mass-panel__cite {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--gold-soft);
+  margin-top: 10px;
+  letter-spacing: .14em;
+}
+
+.kameari-mass-panel__r { padding: 48px; }
+.kameari-mass-row {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 24px;
+  align-items: baseline;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.kameari-mass-row:last-child { border-bottom: 0; }
+.kameari-mass-row.featured { background: linear-gradient(90deg, rgba(163,130,58,.06), transparent); margin: 0 -16px; padding: 18px 16px; }
+.kameari-mass-row__day {
+  font-family: var(--serif-en); font-style: italic;
+  font-size: 13px; color: var(--gold);
+  letter-spacing: .14em;
+}
+.kameari-mass-row__day .jp {
+  display: block;
+  font-family: var(--serif-jp); font-style: normal;
+  font-size: 16px; color: var(--ink);
+  letter-spacing: .14em; margin-bottom: 2px;
+}
+.kameari-mass-row__name {
+  font-family: var(--serif-jp);
+  font-size: 16px;
+  letter-spacing: .08em;
+  color: var(--ink);
+}
+.kameari-mass-row__name .note {
+  display: block;
+  font-family: var(--sans-jp);
+  font-size: 12px;
+  color: var(--ink-3);
+  letter-spacing: .04em;
+  margin-top: 2px;
+}
+.kameari-mass-row__time {
+  font-family: var(--serif-en);
+  font-size: 22px;
+  color: var(--accent);
+  letter-spacing: .02em;
+  font-feature-settings: "lnum" 1;
+}
+.kameari-mass-row__time.lg { font-size: 28px; }
+.kameari-mass-panel__foot {
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.kameari-mass-panel__foot small {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  color: var(--ink-3);
+}
+@media (max-width: 880px) {
+  .kameari-mass-panel { grid-template-columns: 1fr; }
+  .kameari-mass-panel__l { padding: 40px 28px; }
+  .kameari-mass-panel__r { padding: 32px 28px; }
+  .kameari-mass-row { grid-template-columns: 80px 1fr auto; gap: 16px; }
+}
+
+/* ============================================================
+   News cards (driven by kameari_posts shortcode)
+   ============================================================ */
+
+.kameari-news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+@media (max-width: 880px) {
+  .kameari-news-grid { grid-template-columns: 1fr; gap: 28px; }
+}
+.kameari-news-card {
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  display: flex; flex-direction: column;
+  transition: border-color .2s;
+  overflow: hidden;
+}
+.kameari-news-card:hover { border-color: var(--accent); }
+.kameari-news-card__thumb {
+  aspect-ratio: 4/3;
+  background-color: var(--paper-2);
+  background-size: cover;
+  background-position: center;
+  display: block;
+}
+.kameari-news-card__thumb--empty {
+  background-image:
+    repeating-linear-gradient(135deg,
+      rgba(43,61,47,.03) 0 8px,
+      rgba(43,61,47,.06) 8px 16px);
+}
+.kameari-news-card__body { padding: 28px 28px 32px; flex: 1; display: flex; flex-direction: column; }
+.kameari-news-card__meta {
+  display: flex; gap: 14px; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  color: var(--ink-3);
+  margin-bottom: 14px;
+}
+.kameari-news-card__tag {
+  display: inline-flex;
+  padding: 3px 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--accent);
+  font-family: var(--serif-jp);
+  font-size: 11px;
+  letter-spacing: .2em;
+}
+.kameari-news-card h4 {
+  margin: 0 0 14px;
+  font-family: var(--serif-jp);
+  font-weight: 500;
+  font-size: 19px;
+  letter-spacing: .06em;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.kameari-news-card h4 a { color: inherit; }
+.kameari-news-card h4 a:hover { color: var(--accent); }
+.kameari-news-card p {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.9;
+  flex: 1;
+}
+.kameari-news-card__more {
+  font-family: var(--serif-jp);
+  font-size: 13px; letter-spacing: .14em;
+  color: var(--accent);
+  display: inline-flex; gap: 8px; align-items: baseline;
+}
+.kameari-news-card__more .arr { font-family: var(--serif-en); font-style: italic; }
+
+/* ============================================================
+   Split (about / pastor's word)
    ============================================================ */
 
 .kameari-split {
-  align-items: start;
   display: grid;
-  gap: clamp(2rem, 5vw, 4rem);
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
 }
-
-.kameari-split--reverse {
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+.kameari-split__img { background: var(--paper-2); min-height: 480px; position: relative; }
+.kameari-split__img img { width: 100%; height: 100%; position: absolute; inset: 0; object-fit: cover; }
+.kameari-split__text {
+  padding: 96px 80px;
+  background: var(--paper);
+  display: flex; flex-direction: column; justify-content: center;
 }
-
-.kameari-split__intro h2,
-.kameari-split__intro .kameari-display {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-top: 0;
+.kameari-split__text .kameari-eyebrow { margin-bottom: 24px; }
+.kameari-split__text h2 {
+  margin: 0 0 28px;
+  font-family: var(--serif-jp);
+  font-weight: 400;
+  font-size: clamp(28px, 3vw, 40px);
+  letter-spacing: .08em;
+  line-height: 1.45;
 }
-
-@media (max-width: 880px) {
-  .kameari-split,
-  .kameari-split--reverse {
-    grid-template-columns: 1fr;
-  }
+.kameari-split__text p {
+  margin: 0 0 18px;
+  color: var(--ink-2);
+  line-height: 2;
 }
-
-/* ============================================================
-   Generic card grid (used by activities/give section)
-   ============================================================ */
-
-.kameari-card-grid {
-  display: grid;
-  gap: clamp(1rem, 2.5vw, 1.5rem);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+.kameari-split__quote {
+  font-family: var(--serif-jp);
+  font-size: 17px;
+  letter-spacing: .06em;
+  line-height: 2.1;
+  color: var(--ink);
+  border-left: 1px solid var(--gold);
+  padding: 4px 0 4px 22px;
+  margin: 28px 0;
 }
-
-.kameari-card,
-.wp-block-group.kameari-card {
-  background: var(--kameari-white);
-  border: 1px solid var(--kameari-border);
-  border-radius: var(--kameari-radius-sm);
-  box-shadow: var(--kameari-shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  min-height: 100%;
-  padding: clamp(1.5rem, 3vw, 2.25rem);
-  text-decoration: none;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+.kameari-split__sig {
+  font-family: var(--serif-en);
+  font-style: italic;
+  color: var(--accent);
+  font-size: 18px;
+  margin-top: 32px;
 }
-
-.kameari-card:hover {
-  box-shadow: var(--kameari-shadow-strong);
-  transform: translateY(-4px);
-}
-
-.kameari-card h3,
-.kameari-card h4 {
-  color: var(--kameari-navy);
-  font-family: var(--kameari-display);
-  font-size: 1.35rem;
-  margin: 0;
-}
-
-.kameari-card p {
-  color: var(--kameari-text-soft);
-  margin: 0;
-}
-
-.kameari-card--gold {
-  border-top: 3px solid var(--kameari-olive);
-}
-
-/* ============================================================
-   News / post listing
-   ============================================================ */
-
-.kameari-post-list {
-  display: grid;
-  gap: clamp(1.5rem, 3vw, 2.25rem);
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-}
-
-.kameari-post-list__item {
-  background: var(--kameari-white);
-  border: 1px solid var(--kameari-border);
-  border-radius: var(--kameari-radius-sm);
-  box-shadow: var(--kameari-shadow);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.kameari-post-list__item:hover {
-  box-shadow: var(--kameari-shadow-strong);
-  transform: translateY(-4px);
-}
-
-.kameari-post-list__thumb {
-  aspect-ratio: 16/9;
-  background: var(--kameari-sand-soft);
-  background-position: center;
-  background-size: cover;
+.kameari-split__sig .name {
   display: block;
+  font-family: var(--serif-jp);
+  font-style: normal;
+  font-size: 14px;
+  letter-spacing: .12em;
+  color: var(--ink-3);
+  margin-top: 4px;
+}
+@media (max-width: 980px) {
+  .kameari-split { grid-template-columns: 1fr; }
+  .kameari-split__img { min-height: 320px; }
+  .kameari-split__text { padding: 56px 28px; }
 }
 
-.kameari-post-list__body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: 0.6rem;
-  padding: 1.5rem 1.5rem 1.75rem;
-}
+/* ============================================================
+   Activity tiles
+   ============================================================ */
 
-.kameari-post-list__item time {
-  color: var(--kameari-olive-dark);
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+.kameari-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
 }
-
-.kameari-post-list__item h2,
-.kameari-post-list__item h3 {
-  color: var(--kameari-navy);
-  font-family: var(--kameari-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-  line-height: 1.35;
-  margin: 0;
-}
-
-.kameari-post-list__item h2 a,
-.kameari-post-list__item h3 a {
+.kameari-tile {
+  background: var(--paper);
+  padding: 36px 28px 32px;
+  display: flex; flex-direction: column;
+  min-height: 240px;
+  transition: background .25s;
   color: inherit;
 }
-
-.kameari-post-list__item h2 a:hover,
-.kameari-post-list__item h3 a:hover {
-  color: var(--kameari-olive);
+.kameari-tile:hover { background: var(--paper-2); }
+.kameari-tile__num {
+  font-family: var(--serif-en); font-style: italic;
+  font-size: 14px; color: var(--gold); letter-spacing: .14em;
+  margin-bottom: 18px;
 }
-
-.kameari-post-list__item p {
-  color: var(--kameari-text-soft);
-  font-size: 0.96rem;
-  margin: 0;
-}
-
-.kameari-news-list .wp-block-post {
-  background: var(--kameari-white);
-  border: 1px solid var(--kameari-border);
-  border-radius: var(--kameari-radius-sm);
-  box-shadow: var(--kameari-shadow);
-  padding: 1.5rem;
-}
-
-.kameari-news-list .wp-block-post-title {
-  font-family: var(--kameari-display);
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.kameari-news-list .wp-block-post-date,
-.kameari-news-list time {
-  color: var(--kameari-olive-dark);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-/* ============================================================
-   Single post / page styling
-   ============================================================ */
-
-/* Single-post hero. Kadence renders both a "thumbnail behind title" block
-   with the featured image as background AND its own .entry-header inside the
-   article — we hide both and use our own clean cream header injected by the
-   the_content filter (.kameari-post-hero). */
-body.single-post .post-thumbnail.kadence-thumbnail-position-behind,
-body.single-post .article-post-thumbnail.kadence-thumbnail-position-behind,
-body.single-post article.single-entry > .entry-content-wrap > .entry-header,
-body.single-post article.single-entry > header.entry-header {
-  display: none !important;
-}
-
-.kameari-post-hero {
-  background: var(--kameari-sand);
-  margin: 0 calc(50% - 50vw) 3rem;
-  padding: clamp(3rem, 8vw, 5.5rem) clamp(1.25rem, 5vw, 3rem);
-  text-align: center;
-  width: 100vw;
-}
-
-.kameari-post-hero__inner {
-  margin: 0 auto;
-  max-width: var(--kameari-narrow-width);
-}
-
-.kameari-post-hero .kameari-eyebrow {
-  color: var(--kameari-olive-dark);
-  font-weight: 600;
-}
-
-.kameari-post-hero h1 {
-  color: var(--kameari-navy);
-  font-family: var(--kameari-display);
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
+.kameari-tile h4 {
+  margin: 0 0 12px;
+  font-family: var(--serif-jp);
   font-weight: 500;
-  letter-spacing: -0.005em;
-  line-height: 1.2;
-  margin: 0 0 1rem;
-  text-wrap: balance;
+  font-size: 18px;
+  letter-spacing: .08em;
+  line-height: 1.55;
+  color: var(--ink);
 }
-
-.kameari-post-hero__meta {
-  color: var(--kameari-text-soft);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  margin: 0;
-  text-transform: uppercase;
+.kameari-tile p {
+  margin: 0 0 22px;
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.85;
 }
-
-.entry-content,
-.entry-content p,
-.entry-content li {
-  font-family: var(--kameari-sans);
-  font-size: 1.05rem;
-  line-height: 1.9;
+.kameari-tile__more {
+  margin-top: auto;
+  font-family: var(--serif-jp);
+  font-size: 12px;
+  letter-spacing: .14em;
+  color: var(--accent);
+  display: inline-flex; gap: 8px; align-items: baseline;
 }
-
-.entry-content h2 {
-  font-family: var(--kameari-display);
-  font-size: clamp(1.7rem, 3vw, 2.2rem);
-  margin-top: 2.5rem;
-}
-
-.entry-content h3 {
-  font-family: var(--kameari-display);
-  font-size: clamp(1.35rem, 2.4vw, 1.65rem);
-  margin-top: 2rem;
-}
-
-.entry-content blockquote {
-  border-left: 3px solid var(--kameari-olive);
-  color: var(--kameari-text);
-  font-family: var(--kameari-display);
-  font-size: 1.25rem;
-  font-style: italic;
-  margin: 2rem 0;
-  padding: 0.5rem 0 0.5rem 1.5rem;
-}
-
-.entry-content img {
-  border-radius: var(--kameari-radius-sm);
-}
+.kameari-tile__more .arr { font-family: var(--serif-en); font-style: italic; }
+@media (max-width: 980px) { .kameari-tiles { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .kameari-tiles { grid-template-columns: 1fr; } }
 
 /* ============================================================
-   Map block
+   Visit card
    ============================================================ */
 
-.kameari-map,
-iframe.kameari-map {
-  border: 0;
-  border-radius: var(--kameari-radius-sm);
-  box-shadow: var(--kameari-shadow);
-  display: block;
-  height: 420px;
-  min-height: 360px;
-  width: 100%;
-}
-
-/* ============================================================
-   Floating "Mass times" CTA
-   ============================================================ */
-
-.kameari-floating-cta {
+.kameari-visit-card {
+  background: var(--accent);
+  color: var(--paper);
+  padding: 80px 64px;
+  position: relative; overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 64px;
   align-items: center;
-  background: var(--kameari-navy);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  bottom: 24px;
-  box-shadow: 0 18px 40px rgba(20, 32, 54, 0.35);
-  color: var(--kameari-white);
-  display: inline-flex;
-  font-family: var(--kameari-sans);
-  font-size: 0.78rem;
-  font-weight: 600;
-  gap: 0.55rem;
-  letter-spacing: 0.18em;
-  padding: 0.85rem 1.5rem;
-  position: fixed;
-  right: 24px;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: background 0.2s ease, transform 0.2s ease;
-  z-index: 50;
 }
-
-.kameari-floating-cta:hover {
-  background: var(--kameari-olive);
-  color: var(--kameari-white);
-  transform: translateY(-2px);
-}
-
-.kameari-floating-cta__icon {
-  background: var(--kameari-olive);
+.kameari-visit-card::before {
+  content: ""; position: absolute;
+  top: 50%; left: -180px; transform: translateY(-50%);
+  width: 360px; height: 360px;
   border-radius: 50%;
-  display: inline-grid;
-  height: 24px;
-  place-items: center;
-  width: 24px;
+  border: 1px solid rgba(255,255,255,.08);
 }
-
-.kameari-floating-cta__icon::before {
-  background: var(--kameari-white);
-  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'><path d='M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3'/><circle cx='12' cy='12' r='4'/></svg>") no-repeat center / 14px 14px;
-  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'><path d='M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3'/><circle cx='12' cy='12' r='4'/></svg>") no-repeat center / 14px 14px;
-  content: "";
-  height: 14px;
-  width: 14px;
+.kameari-visit-card::after {
+  content: ""; position: absolute;
+  top: 50%; left: -240px; transform: translateY(-50%);
+  width: 480px; height: 480px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.05);
 }
-
-@media (max-width: 600px) {
-  .kameari-floating-cta {
-    bottom: 12px;
-    font-size: 0.72rem;
-    padding: 0.75rem 1.1rem;
-    right: 12px;
-  }
+.kameari-visit-card .kameari-eyebrow .kanji,
+.kameari-visit-card .kameari-eyebrow .en { color: var(--gold-soft); }
+.kameari-visit-card .kameari-eyebrow .rule { background: var(--gold-soft); }
+.kameari-visit-card h2 {
+  font-family: var(--serif-jp);
+  font-weight: 400;
+  font-size: clamp(28px, 2.8vw, 38px);
+  letter-spacing: .08em;
+  margin: 16px 0 24px;
+  line-height: 1.45;
+}
+.kameari-visit-card > div > p { margin: 0 0 28px; opacity: .85; line-height: 2; }
+.kameari-visit-card__actions { display: flex; gap: 14px; flex-wrap: wrap; position: relative; z-index: 2; }
+.kameari-visit-card__actions .kameari-btn {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+.kameari-visit-card__actions .kameari-btn:hover {
+  background: var(--gold-soft);
+  border-color: var(--gold-soft);
+}
+.kameari-visit-card__actions .kameari-btn--ghost {
+  background: transparent;
+  color: var(--paper);
+  border-color: rgba(255,255,255,.4);
+}
+.kameari-visit-card__actions .kameari-btn--ghost:hover {
+  background: rgba(255,255,255,.08);
+  color: var(--paper);
+  border-color: var(--paper);
+}
+.kameari-visit-checklist {
+  display: flex; flex-direction: column; gap: 18px;
+  position: relative; z-index: 2;
+}
+.kameari-visit-check {
+  display: grid; grid-template-columns: 32px 1fr; gap: 16px;
+  align-items: start;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.kameari-visit-check:last-child { border-bottom: 0; }
+.kameari-visit-check__num {
+  font-family: var(--serif-en); font-style: italic;
+  color: var(--gold-soft); font-size: 18px;
+}
+.kameari-visit-check__text {
+  font-family: var(--serif-jp);
+  font-size: 15px; line-height: 1.8;
+  letter-spacing: .06em;
+}
+.kameari-visit-check__text small {
+  display: block; font-family: var(--sans-jp); font-size: 12px;
+  opacity: .7; letter-spacing: .04em; margin-top: 4px;
+}
+@media (max-width: 980px) {
+  .kameari-visit-card { grid-template-columns: 1fr; padding: 56px 28px; gap: 40px; }
 }
 
 /* ============================================================
-   Schedule list (ミサ pages)
+   Access strip
    ============================================================ */
 
-.kameari-schedule-list {
+.kameari-access {
   display: grid;
-  gap: 0.75rem;
+  grid-template-columns: 1fr 1fr;
+  background: var(--paper);
+  border-top: 1px solid var(--line-soft);
 }
-
-.kameari-schedule-item {
-  align-items: baseline;
-  border-bottom: 1px solid var(--kameari-border);
-  display: grid;
-  gap: 0.75rem;
-  grid-template-columns: minmax(8rem, 0.9fr) 1.4fr;
-  padding: 0.85rem 0;
+.kameari-access__info {
+  padding: 80px 64px;
+  display: flex; flex-direction: column; gap: 28px;
 }
-
-.kameari-schedule-item strong {
-  color: var(--kameari-olive-dark);
-  font-family: var(--kameari-display);
-  font-weight: 600;
+.kameari-access__info h3 {
+  font-family: var(--serif-jp); font-weight: 400;
+  font-size: 28px; letter-spacing: .08em; margin: 0;
+  color: var(--ink);
+  line-height: 1.5;
 }
-
-@media (max-width: 767px) {
-  .kameari-schedule-item {
-    grid-template-columns: 1fr;
-  }
+.kameari-access dl {
+  display: grid; grid-template-columns: 100px 1fr; gap: 12px 24px;
+  font-size: 14px; line-height: 1.9;
+  margin: 0;
+}
+.kameari-access dt {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  color: var(--ink-3); text-transform: uppercase;
+  padding-top: 4px;
+}
+.kameari-access dd { margin: 0; color: var(--ink-2); }
+.kameari-access dd .strong { color: var(--ink); font-family: var(--serif-jp); font-size: 16px; letter-spacing: .06em; }
+.kameari-access__buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+.kameari-access__map {
+  background: var(--paper-2);
+  position: relative;
+  min-height: 380px;
+  border-left: 1px solid var(--line-soft);
+}
+.kameari-access__map iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+@media (max-width: 980px) {
+  .kameari-access { grid-template-columns: 1fr; }
+  .kameari-access__info { padding: 56px 28px; }
+  .kameari-access__map { min-height: 280px; border-left: 0; border-top: 1px solid var(--line-soft); }
 }
 
 /* ============================================================
-   Footer (Kadence override)
+   Footer (injected)
    ============================================================ */
 
 .site-footer,
@@ -1023,115 +902,180 @@ iframe.kameari-map {
 .site-footer-row-layout-fullwidth-contained,
 .site-footer-row-container,
 .footer-html {
-  background: var(--kameari-navy-dark);
+  background: var(--ink);
   color: rgba(255, 255, 255, 0.72);
 }
-
-.site-footer a {
-  color: var(--kameari-white);
-  text-decoration: none;
-}
-
-.site-footer a:hover {
-  color: var(--kameari-olive-soft);
-}
-
-/* Hide the default Kadence "WordPress Theme by Kadence WP" credit row;
-   our injected .kameari-footer covers everything we need. */
+.site-footer a { color: var(--paper); text-decoration: none; }
+.site-footer a:hover { color: var(--gold-soft); }
 .site-footer .site-footer-row-tertiary,
 .site-footer .site-footer-row-tertiary-section-1,
-.site-footer .footer-html {
-  display: none !important;
-}
+.site-footer .footer-html { display: none !important; }
 
 .kameari-footer {
-  background: var(--kameari-navy-dark);
-  color: rgba(255, 255, 255, 0.78);
-  padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 72px 0 36px;
 }
-
-.kameari-footer .kameari-inner {
+.kameari-footer__inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.kameari-footer__grid {
   display: grid;
-  gap: clamp(2rem, 4vw, 3rem);
-  grid-template-columns: 1.3fr 1fr 1fr;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
 }
-
-.kameari-footer h4 {
-  color: var(--kameari-olive-soft);
-  font-family: var(--kameari-display);
-  font-size: 1.15rem;
-  letter-spacing: 0.04em;
-  margin: 0 0 1rem;
-}
-
-.kameari-footer p,
-.kameari-footer a,
-.kameari-footer li {
-  color: rgba(255, 255, 255, 0.78);
-  font-family: var(--kameari-sans);
-  font-size: 0.93rem;
-  line-height: 1.85;
-}
-
-.kameari-footer ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
 .kameari-footer__brand {
-  font-family: var(--kameari-display);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
-
+.kameari-footer__mark {
+  width: 48px; height: 48px;
+  background: url("assets/logo.svg") no-repeat center / contain;
+  filter: brightness(0) invert(1) sepia(.5) saturate(2) hue-rotate(7deg);
+  flex-shrink: 0;
+  opacity: .85;
+}
+.kameari-footer__brand-text { line-height: 1.2; }
+.kameari-footer__brand-jp {
+  font-family: var(--serif-jp);
+  font-weight: 500;
+  font-size: 17px;
+  letter-spacing: .12em;
+  color: var(--paper);
+}
+.kameari-footer__brand-en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: .14em;
+  color: var(--gold-soft);
+  margin-top: 4px;
+}
+.kameari-footer__tag {
+  margin-top: 24px;
+  font-family: var(--serif-jp);
+  font-size: 14px; line-height: 2; letter-spacing: .06em;
+  opacity: .7;
+  max-width: 320px;
+}
+.kameari-footer__col h5 {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold-soft);
+  margin: 0 0 20px;
+  font-weight: normal;
+}
+.kameari-footer__col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.kameari-footer__col a {
+  font-family: var(--serif-jp);
+  font-size: 14px; letter-spacing: .08em;
+  color: var(--paper);
+  opacity: .8;
+}
+.kameari-footer__col a:hover { opacity: 1; color: var(--gold-soft); }
 .kameari-footer__bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.48);
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-  margin-top: clamp(2rem, 4vw, 3rem);
-  padding-top: clamp(1rem, 2vw, 1.5rem);
-  text-align: center;
+  padding-top: 32px;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+  color: rgba(255,255,255,.4);
 }
-
 @media (max-width: 880px) {
-  .kameari-footer .kameari-inner {
-    grid-template-columns: 1fr;
-  }
+  .kameari-footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .kameari-footer__bottom { flex-direction: column; gap: 12px; }
+}
+@media (max-width: 540px) {
+  .kameari-footer__grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
-   Mobile tweaks
+   Page hero (single posts + non-home pages with our hero pattern)
+   ============================================================ */
+
+.kameari-post-hero {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-soft);
+  margin: 0 calc(50% - 50vw) 3rem;
+  padding: 88px clamp(20px, 5vw, 48px) 64px;
+  width: 100vw;
+}
+.kameari-post-hero__inner {
+  margin: 0 auto;
+  max-width: 1240px;
+}
+.kameari-post-hero .kameari-eyebrow { margin-bottom: 16px; }
+.kameari-post-hero h1 {
+  color: var(--ink);
+  font-family: var(--serif-jp);
+  font-weight: 400;
+  font-size: clamp(32px, 4vw, 52px);
+  letter-spacing: .08em;
+  line-height: 1.4;
+  margin: 0 0 18px;
+}
+.kameari-post-hero__meta {
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Hide Kadence's default single-post thumbnail-behind-title */
+body.single-post .post-thumbnail.kadence-thumbnail-position-behind,
+body.single-post .article-post-thumbnail.kadence-thumbnail-position-behind,
+body.single-post article.single-entry > .entry-content-wrap > .entry-header,
+body.single-post article.single-entry > header.entry-header { display: none !important; }
+
+.entry-content,
+.entry-content p,
+.entry-content li {
+  font-family: var(--sans-jp);
+  font-size: 1.05rem;
+  line-height: 1.95;
+  color: var(--ink-2);
+}
+.entry-content h2 {
+  font-family: var(--serif-jp);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  letter-spacing: .08em;
+  margin-top: 2.5rem;
+  color: var(--ink);
+}
+.entry-content h3 {
+  font-family: var(--serif-jp);
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+  letter-spacing: .08em;
+  margin-top: 2rem;
+  color: var(--accent);
+}
+.entry-content blockquote {
+  border-left: 2px solid var(--gold);
+  color: var(--ink);
+  font-family: var(--serif-jp);
+  font-size: 1.05rem;
+  font-style: normal;
+  margin: 2rem 0;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+}
+
+/* ============================================================
+   Mobile
    ============================================================ */
 
 @media (max-width: 767px) {
-  body {
-    font-size: 16px;
-  }
-
-  .kameari-hero__content {
-    min-height: 540px;
-    padding: 4rem 1.25rem;
-  }
-
-  .kameari-actions,
-  .wp-block-buttons.kameari-actions {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .kameari-actions .wp-block-button,
-  .kameari-actions .wp-block-button__link {
-    width: 100%;
-  }
+  body { font-size: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     scroll-behavior: auto !important;
     transition-duration: 0.001ms !important;

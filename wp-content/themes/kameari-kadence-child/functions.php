@@ -12,7 +12,7 @@ if (! defined('ABSPATH')) {
 add_action('wp_enqueue_scripts', function (): void {
     wp_enqueue_style(
         'kameari-google-fonts',
-        'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap',
+        'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@400;500;600&display=swap',
         [],
         null
     );
@@ -42,7 +42,9 @@ add_filter('body_class', function (array $classes): array {
     $content = ltrim((string) $post->post_content);
     if (
         str_starts_with($content, '<!-- wp:group {"align":"full","className":"kameari-hero"') ||
-        str_starts_with($content, '<!-- wp:group {"align":"full","className":"kameari-section')
+        str_starts_with($content, '<!-- wp:group {"align":"full","className":"kameari-section') ||
+        str_starts_with($content, '<!-- wp:group {"align":"full","className":"kameari-split-wrap"') ||
+        str_starts_with($content, '<!-- wp:group {"align":"full","className":"kameari-access-wrap"')
     ) {
         $classes[] = 'kameari-has-custom-hero';
     }
@@ -67,12 +69,62 @@ add_action('init', function (): void {
 require_once get_stylesheet_directory() . '/inc/patterns.php';
 
 /**
+ * Topbar announcement strip — next mass + language switcher. Echoed at
+ * wp_body_open so it sits above the Kadence header.
+ */
+add_action('wp_body_open', function (): void {
+    if (is_admin()) {
+        return;
+    }
+
+    $next = kameari_next_mass_label();
+
+    echo '<div class="kameari-topbar"><div class="kameari-topbar__inner">';
+    echo '<div class="kameari-topbar__mass"><span class="dot"></span><span>' . esc_html($next) . '</span></div>';
+    echo '<div class="kameari-topbar__right">';
+    echo '<a href="' . esc_url(home_url('/')) . '">日本語</a>';
+    echo '<span style="opacity:.5;">·</span>';
+    echo '<a href="' . esc_url(home_url('/en/')) . '">English</a>';
+    echo '<span style="opacity:.5;">·</span>';
+    echo '<a href="' . esc_url(home_url('/ko/')) . '">한국어</a>';
+    echo '</div></div></div>';
+}, 5);
+
+/**
+ * Compute the next Sunday principal mass label ("次の主日ミサ：M月D日（日）9:30").
+ * Mass schedule is from the parish's published times.
+ */
+function kameari_next_mass_label(): string
+{
+    $tz   = new DateTimeZone('Asia/Tokyo');
+    $now  = new DateTimeImmutable('now', $tz);
+    $sun  = $now;
+    while ((int) $sun->format('w') !== 0) {
+        $sun = $sun->modify('+1 day');
+    }
+    // If it's Sunday before 9:30 use today; if after, jump to next Sunday.
+    if ((int) $now->format('w') === 0 && (int) $now->format('Hi') >= 930) {
+        $sun = $sun->modify('+7 days');
+    }
+
+    $weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+    $w = $weekdays[(int) $sun->format('w')];
+
+    return sprintf(
+        '次の主日ミサ：%d月%d日（%s）9:30',
+        (int) $sun->format('n'),
+        (int) $sun->format('j'),
+        $w
+    );
+}
+
+/**
  * [kameari_posts] — modern card grid for category listings and the home page.
  *
  * Attributes:
  *   - category        slug, e.g. "news"
  *   - posts_per_page  int (1-24)
- *   - layout          "card" (default) or "featured"
+ *   - layout          "card" (default) or "news-grid"
  */
 add_shortcode('kameari_posts', function (array $atts = []): string {
     $atts = shortcode_atts([
@@ -94,30 +146,56 @@ add_shortcode('kameari_posts', function (array $atts = []): string {
     $query = new WP_Query($args);
 
     if (! $query->have_posts()) {
-        return '<p style="text-align:center;color:var(--kameari-text-soft);">'
+        return '<p style="text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:12px;letter-spacing:.2em;">'
             . esc_html__('現在表示できる記事はありません。', 'kameari')
             . '</p>';
     }
 
+    $is_news_grid = 'news-grid' === $atts['layout'];
+
     ob_start();
-    echo '<div class="kameari-post-list">';
+    echo $is_news_grid ? '<div class="kameari-news-grid">' : '<div class="kameari-post-list">';
     while ($query->have_posts()) {
         $query->the_post();
         $thumb = get_the_post_thumbnail_url(get_the_ID(), 'medium_large');
         if (! $thumb) {
             $thumb = kameari_first_inline_image(get_the_ID());
         }
+        $cats     = get_the_category();
+        $cat_name = $cats ? (string) $cats[0]->name : '';
+        $excerpt  = wp_trim_words(get_the_excerpt(), 50, '…');
 
-        echo '<article class="kameari-post-list__item">';
-        if ($thumb) {
-            echo '<a class="kameari-post-list__thumb" href="' . esc_url(get_permalink()) . '" style="background-image:url(' . esc_url($thumb) . ');" aria-hidden="true"></a>';
+        if ($is_news_grid) {
+            echo '<article class="kameari-news-card">';
+            if ($thumb) {
+                echo '<a class="kameari-news-card__thumb" href="' . esc_url(get_permalink()) . '" style="background-image:url(' . esc_url($thumb) . ');" aria-hidden="true"></a>';
+            } else {
+                echo '<span class="kameari-news-card__thumb kameari-news-card__thumb--empty" aria-hidden="true"></span>';
+            }
+            echo '<div class="kameari-news-card__body">';
+            echo '<div class="kameari-news-card__meta">';
+            if ('' !== $cat_name) {
+                echo '<span class="kameari-news-card__tag">' . esc_html($cat_name) . '</span>';
+            }
+            echo '<span>' . esc_html(get_the_date('Y.m.d')) . '</span>';
+            echo '</div>';
+            echo '<h4><a href="' . esc_url(get_permalink()) . '">' . esc_html(get_the_title()) . '</a></h4>';
+            echo '<p>' . esc_html($excerpt) . '</p>';
+            echo '<a class="kameari-news-card__more" href="' . esc_url(get_permalink()) . '">続きを読む <span class="arr">→</span></a>';
+            echo '</div>';
+            echo '</article>';
+        } else {
+            echo '<article class="kameari-post-list__item">';
+            if ($thumb) {
+                echo '<a class="kameari-post-list__thumb" href="' . esc_url(get_permalink()) . '" style="background-image:url(' . esc_url($thumb) . ');" aria-hidden="true"></a>';
+            }
+            echo '<div class="kameari-post-list__body">';
+            echo '<time datetime="' . esc_attr(get_the_date('c')) . '">' . esc_html(get_the_date()) . '</time>';
+            echo '<h3><a href="' . esc_url(get_permalink()) . '">' . esc_html(get_the_title()) . '</a></h3>';
+            echo '<p>' . esc_html($excerpt) . '</p>';
+            echo '</div>';
+            echo '</article>';
         }
-        echo '<div class="kameari-post-list__body">';
-        echo '<time datetime="' . esc_attr(get_the_date('c')) . '">' . esc_html(get_the_date()) . '</time>';
-        echo '<h3><a href="' . esc_url(get_permalink()) . '">' . esc_html(get_the_title()) . '</a></h3>';
-        echo '<p>' . esc_html(wp_trim_words(get_the_excerpt(), 50, '…')) . '</p>';
-        echo '</div>';
-        echo '</article>';
     }
     echo '</div>';
     wp_reset_postdata();
@@ -126,9 +204,8 @@ add_shortcode('kameari_posts', function (array $atts = []): string {
 });
 
 /**
- * Prepend a clean cream-coloured hero (eyebrow category + serif title + date)
- * to single posts. Replaces Kadence's "thumbnail behind title" block which
- * stacks the title on top of the featured image and is hard to read.
+ * Prepend a clean paper-coloured hero (eyebrow category + serif title + date)
+ * to single posts.
  */
 add_filter('the_content', function (string $content): string {
     if (! is_singular('post') || ! in_the_loop() || ! is_main_query()) {
@@ -143,10 +220,10 @@ add_filter('the_content', function (string $content): string {
 
     $hero  = '<div class="kameari-post-hero alignfull"><div class="kameari-post-hero__inner">';
     if ('' !== $category) {
-        $hero .= '<p class="kameari-eyebrow">' . esc_html($category) . '</p>';
+        $hero .= '<p class="kameari-eyebrow"><span class="kanji">' . esc_html($category) . '</span><span class="rule"></span><span class="en">News</span></p>';
     }
     $hero .= '<h1>' . esc_html(get_the_title()) . '</h1>';
-    $hero .= '<p class="kameari-post-hero__meta">' . esc_html(get_the_date()) . '</p>';
+    $hero .= '<p class="kameari-post-hero__meta">' . esc_html(get_the_date('Y.m.d')) . '</p>';
     $hero .= '</div></div>';
 
     return $hero . $content;
@@ -171,22 +248,7 @@ function kameari_first_inline_image(int $post_id): string
 }
 
 /**
- * Floating "Mass Times" CTA visible across the site, mirroring the
- * stlouiswaco.com bottom-right pill.
- */
-add_action('wp_footer', function (): void {
-    if (is_admin() || is_404()) {
-        return;
-    }
-
-    echo '<a class="kameari-floating-cta" href="' . esc_url(home_url('/schedule/mass/')) . '">'
-        . '<span class="kameari-floating-cta__icon" aria-hidden="true"></span>'
-        . esc_html__('ミサの時間 / Directions', 'kameari')
-        . '</a>';
-}, 5);
-
-/**
- * Inject a richer themed footer block when the default Kadence footer is empty.
+ * Replace the empty Kadence footer rows with our themed footer.
  */
 add_action('wp_footer', function (): void {
     if (is_admin()) {
@@ -201,32 +263,51 @@ add_action('wp_footer', function (): void {
     if (!footer) return;
     var html = '\
 <div class="kameari-footer">\
-  <div class="kameari-inner">\
-    <div>\
-      <p class="kameari-footer__brand">東京大司教区<br>カトリック亀有教会</p>\
-      <p>St. Francis of Assisi · Tokyo</p>\
-      <p>〒120-0003<br>東京都足立区東和4-3-20<br>TEL 03-3606-1757</p>\
+  <div class="kameari-footer__inner">\
+    <div class="kameari-footer__grid">\
+      <div>\
+        <div class="kameari-footer__brand">\
+          <div class="kameari-footer__mark"></div>\
+          <div class="kameari-footer__brand-text">\
+            <div class="kameari-footer__brand-jp">カトリック亀有教会</div>\
+            <div class="kameari-footer__brand-en">St. Francis of Assisi · Tokyo</div>\
+          </div>\
+        </div>\
+        <p class="kameari-footer__tag">東京大司教区　葛飾ブロック<br>アシジの聖フランシスコ保護<br>コンベンツアル聖フランシスコ修道会司牧</p>\
+      </div>\
+      <div class="kameari-footer__col">\
+        <h5>Parish</h5>\
+        <ul>\
+          <li><a href="/about/">ご紹介</a></li>\
+          <li><a href="/about/history/">沿革</a></li>\
+          <li><a href="/about/ever/">歴代司祭・修道士</a></li>\
+          <li><a href="/commit/">教会活動</a></li>\
+        </ul>\
+      </div>\
+      <div class="kameari-footer__col">\
+        <h5>Worship</h5>\
+        <ul>\
+          <li><a href="/schedule/mass/">ミサのご案内</a></li>\
+          <li><a href="/schedule/">月間予定</a></li>\
+          <li><a href="/memorial/guidance_wedding/">結婚式</a></li>\
+          <li><a href="/memorial/memorial/">葬儀・共同墓地</a></li>\
+        </ul>\
+      </div>\
+      <div class="kameari-footer__col">\
+        <h5>Contact</h5>\
+        <ul>\
+          <li><a href="/access/">アクセス・地図</a></li>\
+          <li><a href="tel:0336061757">03-3606-1757</a></li>\
+          <li><a href="/about/visitors/">初めての方へ</a></li>\
+          <li>〒120-0003<br>東京都足立区東和4-3-20</li>\
+        </ul>\
+      </div>\
     </div>\
-    <div>\
-      <h4>礼拝</h4>\
-      <ul>\
-        <li><a href="/schedule/mass/">ミサのご案内</a></li>\
-        <li><a href="/schedule/monthly/">月間予定</a></li>\
-        <li><a href="/schedule/annual/">年間予定</a></li>\
-        <li><a href="/about/visitors/">初めての方へ</a></li>\
-      </ul>\
-    </div>\
-    <div>\
-      <h4>共同体</h4>\
-      <ul>\
-        <li><a href="/about/">教会紹介</a></li>\
-        <li><a href="/commit/">教会活動</a></li>\
-        <li><a href="/news/">お知らせ</a></li>\
-        <li><a href="/access/">アクセス</a></li>\
-      </ul>\
+    <div class="kameari-footer__bottom">\
+      <span>© ' + new Date().getFullYear() + ' Catholic Kameari Church · St. Francis of Assisi</span>\
+      <span>Pax et Bonum · 平和と善</span>\
     </div>\
   </div>\
-  <p class="kameari-footer__bottom">© ' + new Date().getFullYear() + ' Catholic Kameari Church · St. Francis of Assisi, Tokyo</p>\
 </div>';
     footer.insertAdjacentHTML('beforeend', html);
   });
