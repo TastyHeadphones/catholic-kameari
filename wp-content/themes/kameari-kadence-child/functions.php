@@ -82,11 +82,9 @@ add_action('wp_body_open', function (): void {
     echo '<div class="kameari-topbar"><div class="kameari-topbar__inner">';
     echo '<div class="kameari-topbar__mass"><span class="dot"></span><span>' . esc_html($next) . '</span></div>';
     echo '<div class="kameari-topbar__right">';
-    echo '<a href="' . esc_url(home_url('/')) . '">日本語</a>';
+    echo '<a href="tel:0336061757">TEL 03-3606-1757</a>';
     echo '<span style="opacity:.5;">·</span>';
-    echo '<a href="' . esc_url(home_url('/en/')) . '">English</a>';
-    echo '<span style="opacity:.5;">·</span>';
-    echo '<a href="' . esc_url(home_url('/ko/')) . '">한국어</a>';
+    echo '<a href="' . esc_url(home_url('/access/')) . '">アクセス</a>';
     echo '</div></div></div>';
 }, 5);
 
@@ -204,29 +202,101 @@ add_shortcode('kameari_posts', function (array $atts = []): string {
 });
 
 /**
- * Prepend a clean paper-coloured hero (eyebrow category + serif title + date)
- * to single posts.
+ * Map of top-level page slugs → English eyebrow tag, used by the page hero.
+ */
+function kameari_page_hero_meta(int $post_id): array
+{
+    $ancestors = array_reverse(get_post_ancestors($post_id));
+    $top_slug  = '';
+    if (! empty($ancestors)) {
+        $top = get_post($ancestors[0]);
+        if ($top instanceof WP_Post) {
+            $top_slug = (string) $top->post_name;
+        }
+    }
+    if ('' === $top_slug) {
+        $post = get_post($post_id);
+        $top_slug = $post instanceof WP_Post ? (string) $post->post_name : '';
+    }
+
+    $map = [
+        'about'    => ['eyebrow_jp' => 'ご紹介',       'eyebrow_en' => 'About our parish',  'crumb' => 'ABOUT'],
+        'schedule' => ['eyebrow_jp' => 'ミサ・予定',   'eyebrow_en' => 'Mass & Calendar',   'crumb' => 'MASS & CALENDAR'],
+        'commit'   => ['eyebrow_jp' => '教会活動',     'eyebrow_en' => 'Parish life',       'crumb' => 'PARISH LIFE'],
+        'memorial' => ['eyebrow_jp' => '結婚式・葬儀', 'eyebrow_en' => 'Sacraments & rites','crumb' => 'SACRAMENTS'],
+        'access'   => ['eyebrow_jp' => 'アクセス',     'eyebrow_en' => 'Find us',           'crumb' => 'ACCESS'],
+        'visitors' => ['eyebrow_jp' => '初めての方へ', 'eyebrow_en' => 'For first-time visitors', 'crumb' => 'VISIT'],
+        'news'     => ['eyebrow_jp' => 'お知らせ',     'eyebrow_en' => 'Announcements',     'crumb' => 'NEWS'],
+    ];
+
+    return $map[$top_slug] ?? ['eyebrow_jp' => '', 'eyebrow_en' => 'Catholic Kameari Church', 'crumb' => ''];
+}
+
+/**
+ * Prepend a clean paper-coloured hero to single posts and to all non-home
+ * pages whose content does not already start with one of our full-bleed
+ * patterns (the home page brings its own hero).
  */
 add_filter('the_content', function (string $content): string {
-    if (! is_singular('post') || ! in_the_loop() || ! is_main_query()) {
+    if (! in_the_loop() || ! is_main_query()) {
         return $content;
     }
 
-    $category = '';
-    $cats = get_the_category();
-    if ($cats) {
-        $category = (string) $cats[0]->name;
+    if (is_singular('post')) {
+        $category = '';
+        $cats = get_the_category();
+        if ($cats) {
+            $category = (string) $cats[0]->name;
+        }
+
+        $hero  = '<div class="kameari-post-hero alignfull"><div class="kameari-post-hero__inner">';
+        if ('' !== $category) {
+            $hero .= '<p class="kameari-eyebrow"><span class="kanji">' . esc_html($category) . '</span><span class="rule"></span><span class="en">News</span></p>';
+        }
+        $hero .= '<h1>' . esc_html(get_the_title()) . '</h1>';
+        $hero .= '<p class="kameari-post-hero__meta">' . esc_html(get_the_date('Y.m.d')) . '</p>';
+        $hero .= '</div></div>';
+
+        return $hero . $content;
     }
 
-    $hero  = '<div class="kameari-post-hero alignfull"><div class="kameari-post-hero__inner">';
-    if ('' !== $category) {
-        $hero .= '<p class="kameari-eyebrow"><span class="kanji">' . esc_html($category) . '</span><span class="rule"></span><span class="en">News</span></p>';
-    }
-    $hero .= '<h1>' . esc_html(get_the_title()) . '</h1>';
-    $hero .= '<p class="kameari-post-hero__meta">' . esc_html(get_the_date('Y.m.d')) . '</p>';
-    $hero .= '</div></div>';
+    if (is_page() && ! is_front_page()) {
+        $trimmed = ltrim($content);
+        // Pages whose body already opens with a full-bleed Kameari section
+        // own their layout; don't double-stack a hero on top.
+        if (
+            str_starts_with($trimmed, '<div class="wp-block-group alignfull kameari-hero') ||
+            str_starts_with($trimmed, '<div class="wp-block-group alignfull kameari-section') ||
+            str_starts_with($trimmed, '<div class="wp-block-group alignfull kameari-split-wrap') ||
+            str_starts_with($trimmed, '<div class="wp-block-group alignfull kameari-access-wrap')
+        ) {
+            return $content;
+        }
 
-    return $hero . $content;
+        $meta = kameari_page_hero_meta(get_the_ID());
+
+        $hero  = '<div class="kameari-post-hero alignfull"><div class="kameari-post-hero__inner">';
+        if ('' !== $meta['crumb']) {
+            $hero .= '<div class="kameari-crumbs"><a href="' . esc_url(home_url('/')) . '">HOME</a> <span>/</span> <span>' . esc_html($meta['crumb']) . '</span></div>';
+        }
+        if ('' !== $meta['eyebrow_jp']) {
+            $hero .= '<p class="kameari-eyebrow"><span class="kanji">' . esc_html($meta['eyebrow_jp']) . '</span><span class="rule"></span><span class="en">' . esc_html($meta['eyebrow_en']) . '</span></p>';
+        } else {
+            $hero .= '<p class="kameari-eyebrow"><span class="en">' . esc_html($meta['eyebrow_en']) . '</span></p>';
+        }
+        $hero .= '<h1>' . esc_html(get_the_title()) . '</h1>';
+        $hero .= '</div></div>';
+
+        // Wrap the rest of the content in our paper prose container so it has
+        // proper width, padding, and reads like the design's prose pages.
+        $body  = '<div class="kameari-page-body"><div class="kameari-page-body__inner">';
+        $body .= $content;
+        $body .= '</div></div>';
+
+        return $hero . $body;
+    }
+
+    return $content;
 }, 5);
 
 /**

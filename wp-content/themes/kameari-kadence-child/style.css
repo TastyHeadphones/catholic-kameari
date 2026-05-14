@@ -993,7 +993,7 @@ body.kameari-has-custom-hero .entry-content { margin: 0 !important; }
 }
 
 /* ============================================================
-   Page hero (single posts + non-home pages with our hero pattern)
+   Page hero (single posts + non-home pages with our hero filter)
    ============================================================ */
 
 .kameari-post-hero {
@@ -1026,11 +1026,44 @@ body.kameari-has-custom-hero .entry-content { margin: 0 !important; }
   margin: 0;
 }
 
-/* Hide Kadence's default single-post thumbnail-behind-title */
-body.single-post .post-thumbnail.kadence-thumbnail-position-behind,
-body.single-post .article-post-thumbnail.kadence-thumbnail-position-behind,
-body.single-post article.single-entry > .entry-content-wrap > .entry-header,
-body.single-post article.single-entry > header.entry-header { display: none !important; }
+.kameari-crumbs {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.kameari-crumbs a { color: var(--ink-3); }
+.kameari-crumbs a:hover { color: var(--accent); }
+
+/* ============================================================
+   Page body wrapper (centered prose container for imported pages)
+   ============================================================ */
+
+.kameari-page-body {
+  background: transparent;
+  padding: 0 0 80px;
+}
+.kameari-page-body__inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 32px);
+}
+@media (min-width: 980px) {
+  .kameari-page-body__inner { background: var(--paper); padding: 56px clamp(28px, 5vw, 72px); border: 1px solid var(--line-soft); }
+}
+
+/* Hide the auto-eye-catch image that the old site prepends to many pages —
+   our page hero already establishes the visual frame. */
+.kameari-page-body .veu_autoEyeCatchBox { display: none; }
+
+/* ============================================================
+   Entry-content typography (imported pages + child theme content)
+   ============================================================ */
 
 .entry-content,
 .entry-content p,
@@ -1040,31 +1073,322 @@ body.single-post article.single-entry > header.entry-header { display: none !imp
   line-height: 1.95;
   color: var(--ink-2);
 }
-.entry-content h2 {
-  font-family: var(--serif-jp);
-  font-weight: 400;
-  font-size: clamp(1.7rem, 3vw, 2.2rem);
-  letter-spacing: .08em;
-  margin-top: 2.5rem;
-  color: var(--ink);
-}
-.entry-content h3 {
+.entry-content > * + * { margin-top: 1.25rem; }
+.entry-content p:empty { display: none; }
+
+.entry-content h2,
+.entry-content h2.wp-block-heading {
   font-family: var(--serif-jp);
   font-weight: 500;
-  font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+  font-size: clamp(1.5rem, 2.6vw, 1.9rem);
   letter-spacing: .08em;
-  margin-top: 2rem;
+  line-height: 1.45;
+  margin: 3rem 0 1.25rem;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+.entry-content h2:first-child { margin-top: 0; }
+
+.entry-content h3,
+.entry-content h3.wp-block-heading {
+  font-family: var(--serif-jp);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
+  letter-spacing: .08em;
+  margin: 2.25rem 0 1rem;
   color: var(--accent);
 }
-.entry-content blockquote {
+
+.entry-content h4,
+.entry-content h4.wp-block-heading {
+  font-family: var(--serif-jp);
+  font-weight: 500;
+  font-size: 1.1rem;
+  letter-spacing: .08em;
+  margin: 2rem 0 0.75rem;
+  color: var(--accent);
+}
+
+.entry-content strong { color: var(--ink); }
+
+.entry-content a {
+  color: var(--accent);
+  border-bottom: 1px solid rgba(43,61,47,.3);
+  transition: border-color .15s;
+}
+.entry-content a:hover {
+  border-bottom-color: var(--accent);
+}
+
+.entry-content ul,
+.entry-content ol { padding-left: 1.5rem; margin: 1rem 0 1.5rem; }
+.entry-content ul li,
+.entry-content ol li { padding: 4px 0; line-height: 1.85; }
+.entry-content ul.wp-block-list { list-style: none; padding-left: 0; }
+.entry-content ul.wp-block-list > li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.entry-content ul.wp-block-list > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.85em;
+  width: 6px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.entry-content blockquote,
+.entry-content blockquote.wp-block-quote {
   border-left: 2px solid var(--gold);
   color: var(--ink);
   font-family: var(--serif-jp);
   font-size: 1.05rem;
   font-style: normal;
+  letter-spacing: .06em;
   margin: 2rem 0;
   padding: 0.5rem 0 0.5rem 1.5rem;
+  background: transparent;
 }
+
+.entry-content img,
+.entry-content .wp-block-image img {
+  border-radius: 2px;
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.entry-content figure { margin: 1.5rem 0; }
+.entry-content figcaption {
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.entry-content iframe {
+  border: 1px solid var(--line-soft);
+  border-radius: 2px;
+  display: block;
+  max-width: 100%;
+  margin: 1.5rem auto;
+  background: var(--paper-2);
+}
+.entry-content iframe[src*="google.com/maps"] {
+  width: 100%;
+  height: 420px;
+}
+
+/* WordPress columns layout — used heavily by old content */
+.entry-content .wp-block-columns {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2.25rem);
+  flex-wrap: wrap;
+  margin: 1.75rem 0;
+}
+.entry-content .wp-block-column {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+.entry-content .wp-block-column > *:first-child { margin-top: 0; }
+
+/* WP buttons inside entry-content */
+.entry-content .wp-block-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 1.5rem 0;
+}
+.entry-content .wp-block-button__link {
+  /* inherits .kameari-btn baseline from top of file */
+  text-decoration: none;
+}
+
+/* Tables — make WP table blocks read like the design's mass-table */
+.entry-content table,
+.entry-content .wp-block-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-family: var(--serif-jp);
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.entry-content thead th {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  font-weight: normal;
+  background: var(--paper-2);
+}
+.entry-content tbody td {
+  padding: 16px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 15px;
+  letter-spacing: .04em;
+  vertical-align: middle;
+  color: var(--ink-2);
+}
+.entry-content tbody tr:last-child td { border-bottom: 0; }
+.entry-content tbody tr:hover td { background: rgba(163,130,58,.04); }
+.entry-content figure.wp-block-table { margin: 1.75rem 0; }
+.entry-content .wp-block-table.is-style-stripes tbody tr:nth-child(odd) td { background: var(--paper-2); }
+.entry-content .wp-block-table.is-style-stripes tbody tr:hover td { background: rgba(163,130,58,.06); }
+
+/* Make .has-text-align-center cells render centered */
+.entry-content table .has-text-align-center { text-align: center; }
+
+@media (max-width: 720px) {
+  .entry-content table { font-size: 14px; }
+  .entry-content tbody td { padding: 12px 10px; }
+}
+
+/* ============================================================
+   VK Plugin (Vektor) class adaptations — used by imported content
+   ============================================================ */
+
+/* Double-line heading style → swap for our typography */
+.entry-content h2.is-style-vk-heading-double_black,
+.entry-content h3.is-style-vk-heading-double_black {
+  border: 0;
+  padding: 0;
+  position: relative;
+  padding-bottom: 16px;
+  margin-top: 3rem;
+}
+.entry-content h2.is-style-vk-heading-double_black::after,
+.entry-content h3.is-style-vk-heading-double_black::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 1px;
+  background: var(--gold);
+}
+.entry-content h2.is-style-vk-heading-double_black strong { font-weight: inherit; }
+
+/* "Both ends" centered headings — let our type system style them, drop the rules */
+.entry-content h2.is-style-vk-heading-both_ends,
+.entry-content h3.is-style-vk-heading-both_ends {
+  text-align: center;
+  border: 0;
+  padding: 0;
+  margin-top: 3rem;
+}
+.entry-content h2.is-style-vk-heading-both_ends .vk-heading__text-wrapper,
+.entry-content h3.is-style-vk-heading-both_ends .vk-heading__text-wrapper {
+  display: inline-block;
+  position: relative;
+  padding: 0 28px;
+}
+.entry-content h2.is-style-vk-heading-both_ends .vk-heading__text-wrapper::before,
+.entry-content h2.is-style-vk-heading-both_ends .vk-heading__text-wrapper::after,
+.entry-content h3.is-style-vk-heading-both_ends .vk-heading__text-wrapper::before,
+.entry-content h3.is-style-vk-heading-both_ends .vk-heading__text-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+}
+.entry-content .is-style-vk-heading-both_ends .vk-heading__text-wrapper::before { right: 100%; }
+.entry-content .is-style-vk-heading-both_ends .vk-heading__text-wrapper::after  { left: 100%; }
+
+/* Dotted bottom-border headings */
+.entry-content h2.is-style-vk-heading-dotted_bottomborder_black,
+.entry-content h3.is-style-vk-heading-dotted_bottomborder_black {
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 12px;
+}
+
+/* VK border-box callout */
+.entry-content .vk_borderBox,
+.vk_borderBox {
+  border: 1px solid var(--line);
+  background: var(--bg);
+  padding: 24px 28px;
+  margin: 1.75rem 0;
+  border-left: 2px solid var(--gold);
+}
+.entry-content .vk_borderBox_title_container,
+.vk_borderBox_title_container {
+  margin-bottom: 0.75rem;
+}
+.entry-content .vk_borderBox_title,
+.vk_borderBox_title {
+  font-family: var(--serif-jp);
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: .08em;
+  color: var(--accent);
+  margin: 0;
+}
+.entry-content .vk_borderBox_body,
+.vk_borderBox_body { font-size: 0.96rem; line-height: 1.9; color: var(--ink-2); }
+
+/* Tame the heavy inline font-size overrides the imported VK markup ships with */
+.entry-content .vk_inline-font-size {
+  font-size: inherit !important;
+  font-family: inherit;
+}
+
+/* Triangle bullet markers — replace the arrowhead with our gold rule */
+.entry-content ul.is-style-vk-triangle-mark,
+.is-style-vk-triangle-mark {
+  list-style: none;
+  padding-left: 0;
+}
+.entry-content ul.is-style-vk-triangle-mark > li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.entry-content ul.is-style-vk-triangle-mark > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.85em;
+  width: 8px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* VK page content wrapper from old child pages list — let it inherit */
+.entry-content .vk_pageContent,
+.entry-content .veu_childPage_list { margin-top: 1.5rem; }
+
+/* Spacers from VK — keep them invisible but preserve their spacing */
+.entry-content .vk_spacer-display-mobile,
+.entry-content .vk_spacer-display-tablet,
+.entry-content .vk_spacer-display-pc { display: block; }
+
+/* ============================================================
+   wp-block-cover — used as section banner on some pages
+   ============================================================ */
+.entry-content .wp-block-cover {
+  border-radius: 2px;
+  margin: 2rem 0;
+  min-height: 240px;
+}
+.entry-content .wp-block-cover__inner-container { color: var(--paper); }
+
+/* Hide Kadence's default single-post thumbnail-behind-title */
+body.single-post .post-thumbnail.kadence-thumbnail-position-behind,
+body.single-post .article-post-thumbnail.kadence-thumbnail-position-behind,
+body.single-post article.single-entry > .entry-content-wrap > .entry-header,
+body.single-post article.single-entry > header.entry-header { display: none !important; }
 
 /* ============================================================
    Mobile
