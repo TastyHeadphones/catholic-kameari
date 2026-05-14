@@ -220,13 +220,15 @@ function kameari_page_hero_meta(int $post_id): array
     }
 
     $map = [
-        'about'    => ['eyebrow_jp' => 'ご紹介',       'eyebrow_en' => 'About our parish',  'crumb' => 'ABOUT'],
-        'schedule' => ['eyebrow_jp' => 'ミサ・予定',   'eyebrow_en' => 'Mass & Calendar',   'crumb' => 'MASS & CALENDAR'],
-        'commit'   => ['eyebrow_jp' => '教会活動',     'eyebrow_en' => 'Parish life',       'crumb' => 'PARISH LIFE'],
-        'memorial' => ['eyebrow_jp' => '結婚式・葬儀', 'eyebrow_en' => 'Sacraments & rites','crumb' => 'SACRAMENTS'],
-        'access'   => ['eyebrow_jp' => 'アクセス',     'eyebrow_en' => 'Find us',           'crumb' => 'ACCESS'],
-        'visitors' => ['eyebrow_jp' => '初めての方へ', 'eyebrow_en' => 'For first-time visitors', 'crumb' => 'VISIT'],
-        'news'     => ['eyebrow_jp' => 'お知らせ',     'eyebrow_en' => 'Announcements',     'crumb' => 'NEWS'],
+        'about'          => ['eyebrow_jp' => 'ご紹介',       'eyebrow_en' => 'About our parish',  'crumb' => 'ABOUT'],
+        'schedule'       => ['eyebrow_jp' => 'ミサ・予定',   'eyebrow_en' => 'Mass & Calendar',   'crumb' => 'MASS & CALENDAR'],
+        'commit'         => ['eyebrow_jp' => '教会活動',     'eyebrow_en' => 'Parish life',       'crumb' => 'PARISH LIFE'],
+        'memorial'       => ['eyebrow_jp' => '結婚式・葬儀', 'eyebrow_en' => 'Sacraments & rites','crumb' => 'SACRAMENTS'],
+        'access'         => ['eyebrow_jp' => 'アクセス',     'eyebrow_en' => 'Find us',           'crumb' => 'ACCESS'],
+        'visitors'       => ['eyebrow_jp' => '初めての方へ', 'eyebrow_en' => 'For first-time visitors', 'crumb' => 'VISIT'],
+        'news'           => ['eyebrow_jp' => 'お知らせ',     'eyebrow_en' => 'Announcements',     'crumb' => 'NEWS'],
+        'information'    => ['eyebrow_jp' => 'お知らせ',     'eyebrow_en' => 'Information',       'crumb' => 'INFORMATION'],
+        'privacy-policy' => ['eyebrow_jp' => '当サイトについて', 'eyebrow_en' => 'About this site','crumb' => 'PRIVACY'],
     ];
 
     return $map[$top_slug] ?? ['eyebrow_jp' => '', 'eyebrow_en' => 'Catholic Kameari Church', 'crumb' => ''];

@@ -1384,6 +1384,199 @@ body.kameari-has-custom-hero .entry-content { margin: 0 !important; }
 }
 .entry-content .wp-block-cover__inner-container { color: var(--paper); }
 
+/* ============================================================
+   Image alignment + figure handling
+   ============================================================ */
+.entry-content::after { content: ""; display: block; clear: both; }
+
+.entry-content .alignleft,
+.entry-content figure.alignleft {
+  float: left;
+  margin: 0.25rem 1.5rem 1rem 0;
+  max-width: 50%;
+}
+.entry-content .alignright,
+.entry-content figure.alignright {
+  float: right;
+  margin: 0.25rem 0 1rem 1.5rem;
+  max-width: 50%;
+}
+.entry-content .aligncenter,
+.entry-content figure.aligncenter {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
+}
+.entry-content figure.is-resized img { max-width: 100%; height: auto; }
+
+.entry-content .wp-block-image.is-style-rounded img,
+.entry-content figure.is-style-rounded img {
+  border-radius: 50%;
+}
+.entry-content .wp-block-image.is-style-vk-image-border img,
+.entry-content figure.is-style-vk-image-border img {
+  border: 1px solid var(--line);
+  padding: 4px;
+  background: var(--paper);
+}
+
+@media (max-width: 720px) {
+  .entry-content .alignleft,
+  .entry-content figure.alignleft,
+  .entry-content .alignright,
+  .entry-content figure.alignright {
+    float: none;
+    margin: 1.5rem auto;
+    max-width: 100%;
+  }
+}
+
+/* Preserve heights for VK / WP spacer blocks */
+.entry-content .wp-block-spacer,
+.wp-block-spacer { display: block; }
+
+/* VK heading: light-gray fill background */
+.entry-content h2.is-style-vk-heading-background_fill_lightgray,
+.entry-content h3.is-style-vk-heading-background_fill_lightgray,
+.entry-content h4.is-style-vk-heading-background_fill_lightgray,
+.entry-content h5.is-style-vk-heading-background_fill_lightgray {
+  background: var(--paper-2);
+  border-left: 3px solid var(--gold);
+  border-bottom: 0;
+  padding: 14px 20px;
+  margin: 2.5rem 0 1.25rem;
+}
+
+/* VK striped table */
+.entry-content .wp-block-table.is-style-vk-table-border-stripes table,
+.entry-content figure.wp-block-table.is-style-vk-table-border-stripes table {
+  border: 1px solid var(--line);
+}
+.entry-content .wp-block-table.is-style-vk-table-border-stripes tbody tr:nth-child(odd) td {
+  background: var(--paper-2);
+}
+.entry-content .wp-block-table.is-style-vk-table-border-stripes tbody tr:hover td {
+  background: rgba(163,130,58,.08);
+}
+
+/* Plain-style VK headings — let our type system handle them */
+.entry-content h2.is-style-vk-heading-plain,
+.entry-content h2.is-style-vk-heading-default {
+  border: 0; padding: 0;
+}
+
+/* Font Awesome external-link fallback (the imported markup references FA
+   icons that may not load) */
+.entry-content .fas.fa-external-link-alt,
+.entry-content .fa-external-link-alt {
+  display: inline-block;
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.9em;
+  text-decoration: none;
+  speak: none;
+  width: auto;
+  margin-left: 4px;
+}
+.entry-content .fas.fa-external-link-alt::before,
+.entry-content .fa-external-link-alt::before {
+  content: "↗";
+  color: var(--gold);
+}
+
+/* ============================================================
+   Vektor child-page list — used on /about/, /commit/, /memorial/ etc.
+   Renders the sub-pages as a card grid.
+   ============================================================ */
+
+.entry-content .veu_childPage_list,
+.veu_childPage_list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin: 2.5rem 0;
+}
+.entry-content .childPage_list_box,
+.childPage_list_box {
+  display: flex;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  padding: 28px;
+  color: inherit;
+  text-decoration: none;
+  border-bottom-width: 1px;
+  transition: border-color .2s, transform .25s;
+}
+.entry-content .childPage_list_box:hover,
+.childPage_list_box:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.entry-content .childPage_list_box_inner,
+.childPage_list_box_inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+.entry-content .childPage_list_title,
+.childPage_list_title {
+  font-family: var(--serif-jp);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: .08em;
+  line-height: 1.5;
+  margin: 0;
+  color: var(--ink);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.entry-content .childPage_list_body,
+.childPage_list_body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.entry-content .childPage_list_body img,
+.childPage_list_body img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 2px;
+  margin: 0;
+  display: block;
+}
+.entry-content .childPage_list_text,
+.childPage_list_text {
+  margin: 0;
+  font-family: var(--sans-jp);
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.85;
+}
+.entry-content .childPage_list_more,
+.childPage_list_more {
+  display: inline-flex;
+  align-self: flex-start;
+  font-family: var(--serif-jp);
+  font-size: 12px;
+  letter-spacing: .14em;
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+  padding: 0 0 2px;
+  background: transparent;
+  margin-top: auto;
+  border-radius: 0;
+}
+.entry-content .childPage_list_box:hover .childPage_list_more,
+.childPage_list_box:hover .childPage_list_more { color: var(--accent-2); }
+
+/* Drop the screen-reader-only post-thumbnail markup */
+.entry-content .screen-reader-text { position: absolute; clip: rect(1px,1px,1px,1px); width: 1px; height: 1px; overflow: hidden; }
+
 /* Hide Kadence's default single-post thumbnail-behind-title */
 body.single-post .post-thumbnail.kadence-thumbnail-position-behind,
 body.single-post .article-post-thumbnail.kadence-thumbnail-position-behind,
