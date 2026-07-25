@@ -16,17 +16,15 @@ while ( have_posts() ) :
 	?>
 
 	<article <?php post_class( 'page-enter' ); ?>>
-		<?php if ( ! get_post_meta( get_the_ID(), '_kameari_hide_page_head', true ) ) : ?>
-			<div class="page-head">
-				<div class="container-wide">
-					<?php kameari_crumbs( get_the_title() ); ?>
-					<h1><?php the_title(); ?></h1>
-					<?php if ( has_excerpt() ) : ?>
-						<p class="lead"><?php echo esc_html( get_the_excerpt() ); ?></p>
-					<?php endif; ?>
-				</div>
+		<div class="page-head">
+			<div class="container-wide">
+				<?php kameari_crumbs( get_the_title() ); ?>
+				<h1><?php the_title(); ?></h1>
+				<?php if ( has_excerpt() ) : ?>
+					<p class="lead"><?php echo esc_html( get_the_excerpt() ); ?></p>
+				<?php endif; ?>
 			</div>
-		<?php endif; ?>
+		</div>
 
 		<?php the_content(); ?>
 	</article>
