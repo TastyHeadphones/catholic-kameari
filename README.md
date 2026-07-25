@@ -35,12 +35,21 @@ Run the same Docker startup smoke test used by GitHub Actions:
 ./scripts/smoke-test-docker.sh
 ```
 
+## Standalone WordPress Theme
+
+`kameari-church` is a self-contained classic theme — no parent theme, no page builder, no required plugins. It implements the Claude Design direction for the parish: bone-and-ink surfaces, one sumi-green accent, Shippori Mincho B1 display type, and twelve inline SVG illustrations that stand in wherever a photograph is missing.
+
+Download `kameari-church.zip` from [Releases](https://github.com/TastyHeadphones/catholic-kameari/releases), then in wp-admin go to **Appearance → Themes → Add New → Upload Theme**.
+
+Read [`docs/kameari-church-theme.md`](docs/kameari-church-theme.md) before activating it on a live site — in particular the notes on the theme-owned post types, switching away from the Kadence child theme, and the Google Fonts request.
+
 ## What Is Included
 
 - Docker local/staging environment for WordPress PHP 8.2 and MariaDB.
 - GHCR-ready production Docker image.
 - Docker smoke test for the GHCR/Railway startup path.
 - Kadence child theme with the Catholic Kameari visual direction.
+- `kameari-church`: a standalone theme (no parent, no plugins) built from the Claude Design direction, published as a downloadable zip on Releases.
 - Editable Gutenberg homepage pattern.
 - Bootstrap script for WordPress settings, theme, plugins, menu, and required pages.
 - Public REST API migration script for pages/posts when a full admin export is unavailable.
@@ -119,6 +128,7 @@ Refresh these files after the current site changes:
 
 ## Documentation
 
+- `docs/kameari-church-theme.md` — the standalone Kameari Church theme: install, content model, and the things to watch out for
 - `docs/technical-recommendation.md`
 - `docs/information-architecture.md`
 - `docs/migration-plan.md`

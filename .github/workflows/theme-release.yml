@@ -1,0 +1,61 @@
+name: Kameari Church theme
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "theme-v*"
+  pull_request:
+    paths:
+      - "wp-content/themes/kameari-church/**"
+      - ".github/workflows/theme-release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  lint:
+    name: Lint theme
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+
+      - name: Check PHP syntax
+        run: |
+          find wp-content/themes/kameari-church -name '*.php' -print0 \
+            | xargs -0 -n1 -P4 php -l
+
+      - name: Check theme.json is valid JSON
+        run: php -r 'json_decode(file_get_contents("wp-content/themes/kameari-church/theme.json"), true, 512, JSON_THROW_ON_ERROR); echo "theme.json OK\n";'
+
+      - name: Check the theme header is present
+        run: grep -q "^Theme Name: Kameari Church" wp-content/themes/kameari-church/style.css
+
+  package:
+    name: Package and attach release asset
+    needs: lint
+    if: startsWith(github.ref, 'refs/tags/theme-v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build theme zip
+        run: |
+          cd wp-content/themes
+          zip -r "$GITHUB_WORKSPACE/kameari-church.zip" kameari-church \
+            -x '*.DS_Store' -x '__MACOSX/*'
+
+      - name: Attach zip to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${GITHUB_REF_NAME}" kameari-church.zip --clobber
