@@ -38,7 +38,8 @@ jobs:
         run: php -r 'json_decode(file_get_contents("wp-content/themes/kameari-church/theme.json"), true, 512, JSON_THROW_ON_ERROR); echo "theme.json OK\n";'
 
       - name: Check the theme header is present
-        run: grep -q "^Theme Name: Kameari Church" wp-content/themes/kameari-church/style.css
+        run: |
+          grep -q "^Theme Name: Kameari Church" wp-content/themes/kameari-church/style.css
 
   package:
     name: Package and attach release asset
