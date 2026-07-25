@@ -1,0 +1,107 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 2,
+	"settings": {
+		"appearanceTools": false,
+		"layout": {
+			"contentSize": "860px",
+			"wideSize": "1180px"
+		},
+		"color": {
+			"custom": true,
+			"customGradient": false,
+			"defaultPalette": false,
+			"defaultGradients": false,
+			"palette": [
+				{ "slug": "bone", "color": "#f3f0e8", "name": "Bone" },
+				{ "slug": "paper", "color": "#ffffff", "name": "Paper" },
+				{ "slug": "paper-2", "color": "#ece8dd", "name": "Warm paper" },
+				{ "slug": "ink", "color": "#0d0d0b", "name": "Ink" },
+				{ "slug": "ink-2", "color": "#3a3833", "name": "Ink soft" },
+				{ "slug": "ink-3", "color": "#6a6760", "name": "Ink muted" },
+				{ "slug": "accent", "color": "#1f352b", "name": "Sumi green" },
+				{ "slug": "gold", "color": "#806128", "name": "Gold" },
+				{ "slug": "liturgical-red", "color": "#8b1a1a", "name": "Liturgical red" }
+			]
+		},
+		"typography": {
+			"customFontSize": true,
+			"lineHeight": true,
+			"dropCap": false,
+			"fontFamilies": [
+				{
+					"slug": "serif-jp",
+					"name": "Mincho (display)",
+					"fontFamily": "\"Shippori Mincho B1\", \"Hiragino Mincho ProN\", \"Yu Mincho\", \"Noto Serif JP\", serif"
+				},
+				{
+					"slug": "sans-jp",
+					"name": "Gothic (body)",
+					"fontFamily": "\"Noto Sans JP\", \"Hiragino Sans\", \"Yu Gothic\", sans-serif"
+				},
+				{
+					"slug": "mono",
+					"name": "Mono (labels)",
+					"fontFamily": "\"JetBrains Mono\", ui-monospace, \"SF Mono\", Menlo, monospace"
+				}
+			],
+			"fontSizes": [
+				{ "slug": "micro", "size": "11px", "name": "Micro label" },
+				{ "slug": "small", "size": "14px", "name": "Small" },
+				{ "slug": "medium", "size": "16px", "name": "Body" },
+				{ "slug": "large", "size": "20px", "name": "Large" },
+				{ "slug": "x-large", "size": "32px", "name": "Heading" },
+				{ "slug": "xx-large", "size": "48px", "name": "Display" }
+			]
+		},
+		"spacing": {
+			"units": [ "px", "rem", "vh", "%" ],
+			"padding": true,
+			"margin": true
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--bone)",
+			"text": "var(--wp--preset--color--ink)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--sans-jp)",
+			"fontSize": "16px",
+			"lineHeight": "2.05"
+		},
+		"elements": {
+			"link": {
+				"color": { "text": "var(--wp--preset--color--ink)" }
+			},
+			"h1": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--serif-jp)",
+					"fontWeight": "400",
+					"lineHeight": "1.25"
+				}
+			},
+			"h2": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--serif-jp)",
+					"fontWeight": "400",
+					"lineHeight": "1.35"
+				}
+			},
+			"h3": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--serif-jp)",
+					"fontWeight": "500",
+					"lineHeight": "1.5"
+				}
+			},
+			"h4": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--serif-jp)",
+					"fontWeight": "500",
+					"lineHeight": "1.5"
+				}
+			}
+		}
+	}
+}
